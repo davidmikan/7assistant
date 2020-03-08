@@ -25,7 +25,12 @@ def ext(s):
                 dat += '0' + a
         try:
             now = datetime.now()
-            dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m') 
+            dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
+            test = dat_formatted.date() - now.date()
+            if test.days <= 7:
+                wday = dat_formatted.weekday()
+                dat_formatted = weekdays[wday]
+                print(weekdays[wday])
         except:
             dat_formatted = False
     else:
@@ -53,6 +58,7 @@ def form(datum):
 #variables
 bot = telebot.TeleBot('940159686:AAH2JNssVMyB0Dc0IKV0xxfZ3mA-LPY0kmg')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein']
+weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 neu = {} #hilfsdictionary
 
@@ -70,7 +76,10 @@ def dazu(message):
     del mest
     datum, text = ext(text)
     if datum:
-        neu = {'dead': str(datum.day) + "." + str(datum.month) + ".", 'task': text}
+        try:
+            neu = {'dead': str(datum.day) + "." + str(datum.month) + ".", 'task': text}
+        except:
+            neu = {'dead': datum, 'task': text}
         if fach in hu:
             hu[fach].append(neu)
         else:
