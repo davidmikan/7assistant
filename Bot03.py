@@ -2,6 +2,8 @@
 import telebot
 import re
 
+print("Github clone test yay")
+
 #funktionen
 def ext(s):
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
