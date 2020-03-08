@@ -3,9 +3,6 @@ import telebot
 import re
 from datetime import datetime, timedelta
 
-print("Github clone test yay")
-
-
 def ext(s):
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
