@@ -2,8 +2,9 @@
 import telebot
 import re
 from datetime import datetime, timedelta
+import difflib
 
-#deine mutter
+#deine mutter ist python
 
 def ext(s):
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
@@ -40,6 +41,8 @@ def ext(s):
 def tags(s):
     p = re.compile(r'montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag', re.I)
     x = p.search(s)
+    x = x.lower()
+    x = x.capitalize()
     if x:
         s = p.sub('',s)
         s = s.replace('  ', ' ')
@@ -56,7 +59,7 @@ def form(datum):
 
 #variables
 bot = telebot.TeleBot('940159686:AAH2JNssVMyB0Dc0IKV0xxfZ3mA-LPY0kmg')
-subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein']
+subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 neu = {} #hilfsdictionary
@@ -69,7 +72,12 @@ def dazu(message):
     del mest[0]
     fach = mest[0]
     if not fach in subs:
-        bot.reply_to(message, 'Falsches Eingabeformat')
+        similar = difflib.get_close_matches(fach, subs, n=1)
+        print(similar)
+        try: 
+            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
+        except:
+            bot.reply_to(message, 'Ich kenne dieses Fach nicht :(')
         return
     text = mest[1]
     del mest
@@ -100,16 +108,28 @@ def dazu(message):
         chid = message.chat.id
         sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
         text = ''
+        show_requests = message.text.split(' ')
+        del show_requests[0]
+        print(show_requests)
         if len(hu) == 0:
             bot.send_sticker(chid, sticker)
             bot.send_message(chid, 'Keine HÜs mehr!')
         else:
-            msg ='AUFGABEN\n'
-            for x in hu:
-                y = hu[x]
-                msg += '[' + x + ']\n'
-                for z in y:
-                    msg += 'bis zum ' + str(z['dead']) + ': ' + z['task'] + '\n'
+            if len(show_requests) > 0:
+                msg = 'HÜs:'
+                for x in show_requests:
+                    print(x)
+                    y = hu[x]
+                    msg += '- ' + x + ' -\n'
+                    for z in y:
+                        msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
+            else:
+                msg ='ALLE HÜS:\n'
+                for x in hu:
+                    y = hu[x]
+                    msg += '- ' + x + ' -\n'
+                    for z in y:
+                        msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
             bot.send_message(chid, msg)
 
 @bot.message_handler(commands = ['del'])
