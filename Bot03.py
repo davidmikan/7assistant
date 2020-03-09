@@ -1,4 +1,3 @@
-#import modules
 import telebot
 import re
 from datetime import datetime, timedelta
@@ -15,6 +14,16 @@ def to_day(datum):
         print(weekdays[wday])
     return datum
 
+def to_date(weekday):
+    now = datetime.now()
+    d = weekdays.index(weekday) - now.weekday()
+    if d < 1:
+        d = 7 + d
+    d = timedelta(days = d)
+    d = now + d
+    #datum = datetime.strptime(str(now.year) + str(d) + str(now.month), '%Y%d%m')
+    return d.date()
+
 def ext(s):
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
@@ -22,7 +31,7 @@ def ext(s):
         dat = ''
         datum = x.group()
         s = p.sub('',s)
-        s = s.replace(' ','')
+        s = s.replace('  ',' ')
         datum = datum.split('.')
         del datum[2]
         for a in datum:
@@ -35,6 +44,9 @@ def ext(s):
         try:
             now = datetime.now()
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
+            dif = dat_formatted - now
+            if dif.days < 1:
+                dat_formatted = False
         except Exception as e:
             print(e)
             dat_formatted = False
@@ -75,7 +87,7 @@ neu = {} #hilfsdictionary
 def dazu(message):
     mest = message.text.split(' ', 2)
     del mest[0]
-    fach = mest[0]
+    fach = mest[0].lower()
     if not fach in subs:
         similar = difflib.get_close_matches(fach, subs, n=1)
         print(similar)
@@ -98,16 +110,16 @@ def dazu(message):
         else:
             hu[fach] = [neu]
     else:
-        wt = tags(text)
-        if wt[0]:
-            neu = {'dead': wt[0], 'task': wt[1]}
+        tag, s = tags(text)
+        if tag in weekdays:
+            tag = to_date(tag)
+            neu = {'dead': str(tag.day) + '.' + str(tag.month) + '.', 'task': s}
             if fach in hu:
                 hu[fach].append(neu)
             else:
                 hu[fach] = [neu]
         else:
             bot.reply_to(message, 'Falsches Eingabeformat')
-        
 
 @bot.message_handler(commands = ['zeige'])
 def zeige(message):
@@ -152,12 +164,9 @@ def zeige(message):
 def dele(message):
     hu.clear()
 
-
 @bot.message_handler(commands = ['print'])
 def pr(message):
     print(hu)
-
-#polling
 
 while True:
     try:
