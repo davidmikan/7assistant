@@ -6,6 +6,15 @@ import difflib
 
 #deine mutter ist python
 
+def to_day(datum):
+    now = datetime.now()
+    test = datum.date() - now.date()
+    if test.days <= 7:
+        wday = datum.weekday()
+        datum = weekdays[wday]
+        print(weekdays[wday])
+    return datum
+
 def ext(s):
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
@@ -26,12 +35,13 @@ def ext(s):
         try:
             now = datetime.now()
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
-            test = dat_formatted.date() - now.date()
-            if test.days <= 7:
-                wday = dat_formatted.weekday()
-                dat_formatted = weekdays[wday]
-                print(weekdays[wday])
-        except:
+            #test = dat_formatted.date() - now.date()
+            #if test.days <= 7:
+            #    wday = dat_formatted.weekday()
+            #    dat_formatted = weekdays[wday]
+            #    print(weekdays[wday])
+        except Exception as e:
+            print(e)
             dat_formatted = False
     else:
         dat_formatted = False
@@ -40,13 +50,13 @@ def ext(s):
 
 def tags(s):
     p = re.compile(r'montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag', re.I)
-    x = p.search(s)
-    x = x.lower()
-    x = x.capitalize()
-    if x:
-        s = p.sub('',s)
+    tag = p.search(s)
+    if tag:
+        s = p.sub('',s, 1)
         s = s.replace('  ', ' ')
-        tag = x.group()
+        tag = tag.group()
+        tag = tag.lower()
+        tag = tag.capitalize()
     else:
         tag = False
     return tag, s
@@ -83,6 +93,7 @@ def dazu(message):
     del mest
     datum, text = ext(text)
     if datum:
+        datum = to_day(datum)
         try:
             neu = {'dead': str(datum.day) + "." + str(datum.month) + ".", 'task': text}
         except:
