@@ -35,11 +35,6 @@ def ext(s):
         try:
             now = datetime.now()
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
-            #test = dat_formatted.date() - now.date()
-            #if test.days <= 7:
-            #    wday = dat_formatted.weekday()
-            #    dat_formatted = weekdays[wday]
-            #    print(weekdays[wday])
         except Exception as e:
             print(e)
             dat_formatted = False
@@ -114,34 +109,44 @@ def dazu(message):
             bot.reply_to(message, 'Falsches Eingabeformat')
         
 
-    @bot.message_handler(commands = ['zeige'])
-    def zeige(message):
-        chid = message.chat.id
-        sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
-        text = ''
-        show_requests = message.text.split(' ')
-        del show_requests[0]
-        print(show_requests)
-        if len(hu) == 0:
-            bot.send_sticker(chid, sticker)
-            bot.send_message(chid, 'Keine HÜs mehr!')
+@bot.message_handler(commands = ['zeige'])
+def zeige(message):
+    chid = message.chat.id
+    sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
+    text = ''
+    show_requests = message.text.split(' ')
+    del show_requests[0]
+    print(show_requests)
+    if len(hu) == 0:
+        bot.send_sticker(chid, sticker)
+        bot.send_message(chid, 'Keine HÜs!')
+    else:
+        if len(show_requests) > 0:
+            msg = 'HÜs:\n'
+            for r in show_requests:
+                print(r)
+                msg += '- ' + r + ' -\n'
+                try:
+                    y = hu[r]
+                    for z in y:
+                        msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
+                except:
+                    if not r in subs:
+                        try: 
+                            simsub = difflib.get_close_matches(r, subs, n=1)
+                            msg += r + '? Meintest du ' + simsub[0] + '?\n'
+                        except:
+                            msg += 'Ich kenne das Fach ' + r + ' nicht :(' + '\n'
+                    else: 
+                        msg += 'Keine HÜs in ' + str(r) + ' \U0001F601' + '!\n'
         else:
-            if len(show_requests) > 0:
-                msg = 'HÜs:'
-                for x in show_requests:
-                    print(x)
-                    y = hu[x]
-                    msg += '- ' + x + ' -\n'
-                    for z in y:
-                        msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
-            else:
-                msg ='ALLE HÜS:\n'
-                for x in hu:
-                    y = hu[x]
-                    msg += '- ' + x + ' -\n'
-                    for z in y:
-                        msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
-            bot.send_message(chid, msg)
+            msg ='ALLE HÜS:\n'
+            for x in hu:
+                y = hu[x]
+                msg += '- ' + x + ' -\n'
+                for z in y:
+                    msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
+        bot.send_message(chid, msg)
 
 @bot.message_handler(commands = ['del'])
 def dele(message):
@@ -157,5 +162,5 @@ def pr(message):
 while True:
     try:
         bot.polling(interval=1)
-    except:
+    except Exception as e:
         continue
