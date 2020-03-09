@@ -3,25 +3,30 @@ import re
 from datetime import datetime, timedelta
 import difflib
 
-#deine mutter ist python
+# variableeeeeen
+bot = telebot.TeleBot('940159686:AAH2JNssVMyB0Dc0IKV0xxfZ3mA-LPY0kmg')
+subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
+weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+hu = {} #dictionary von aufgaben, fächer als keys
+neu = {} #hilfsdictionary
+now = datetime.now()
 
 def to_day(datum):
-    now = datetime.now()
     test = datum.date() - now.date()
     if test.days <= 7:
         wday = datum.weekday()
         datum = weekdays[wday]
-        print(weekdays[wday])
+        print('converted to ' + datum)
+    else:
+        print(datum + ' in more than 1 week, returning')
     return datum
 
 def to_date(weekday):
-    now = datetime.now()
     d = weekdays.index(weekday) - now.weekday()
     if d < 1:
         d = 7 + d
     d = timedelta(days = d)
     d = now + d
-    #datum = datetime.strptime(str(now.year) + str(d) + str(now.month), '%Y%d%m')
     return d.date()
 
 def ext(s):
@@ -42,17 +47,16 @@ def ext(s):
             else:
                 dat += '0' + a
         try:
-            now = datetime.now()
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
             dif = dat_formatted - now
             if dif.days < 1:
-                dat_formatted = False
+                return None
         except Exception as e:
             print(e)
-            dat_formatted = False
+            return None
     else:
-        dat_formatted = False
-    print(dat_formatted)
+        return None
+    print('deadline: ' + dat_formatted)
     return dat_formatted, s
 
 def tags(s):
@@ -68,38 +72,31 @@ def tags(s):
         tag = False
     return tag, s
 
-def form(datum):
-    datum = str(datum)
-    formt = datum[0:2] + '.' + datum[2:4] + '.'
-    return formt
+def add_task():
+    return
 
-
-#variables
-bot = telebot.TeleBot('940159686:AAH2JNssVMyB0Dc0IKV0xxfZ3mA-LPY0kmg')
-subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
-weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
-hu = {} #dictionary von aufgaben, fächer als keys
-neu = {} #hilfsdictionary
-
-#message handlers
-
+# message handlers
 @bot.message_handler(commands = ['dazu'])
 def dazu(message):
+    # variables
     mest = message.text.split(' ', 2)
     del mest[0]
     fach = mest[0].lower()
-    if not fach in subs:
-        similar = difflib.get_close_matches(fach, subs, n=1)
-        print(similar)
-        try: 
-            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
-        except:
-            bot.reply_to(message, 'Ich kenne dieses Fach nicht :(')
-        return
     text = mest[1]
     del mest
     datum, text = ext(text)
-    if datum:
+    print('received request, subject: ' + fach + ', task: ' + text + ', deadline: ' + datum)
+    # checking variables
+    if not fach in subs: # checking subject
+        try:
+            similar = difflib.get_close_matches(fach, subs, n=1)
+            print('couldn\'t find subject ' + fach + ', suggesting ' + similar[0])
+            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
+        except:
+            print('couldn\'t find subject ' + fach)
+            bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928')
+        return
+    if datum: # checking date
         datum = to_day(datum)
         try:
             neu = {'dead': str(datum.day) + "." + str(datum.month) + ".", 'task': text}
@@ -125,7 +122,6 @@ def dazu(message):
 def zeige(message):
     chid = message.chat.id
     sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
-    text = ''
     show_requests = message.text.split(' ')
     del show_requests[0]
     print(show_requests)
