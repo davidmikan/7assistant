@@ -11,16 +11,17 @@ hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 
 def to_day(datum):
-    test = datum.date() - now.date()
+    test = datum - now.date()
     if test.days <= 7:
         wday = datum.weekday()
         datum = weekdays[wday]
-        print('converted to ' + datum)
     else:
-        print(datum + ' in more than 1 week, returning')
+        datum = str(datum.day) + '.' + str(datum.month) + '.'
+    print('converted to ' + datum)
     return datum
 
 def to_date(weekday):
+    print(weekday)
     d = weekdays.index(weekday) - now.weekday()
     if d < 1:
         d = 7 + d
@@ -55,7 +56,7 @@ def extract_date(s):
             return None, s
     else:
         return None, s
-
+    dat_formatted = dat_formatted.date()
     print('deadline: ' + str(dat_formatted))
     return dat_formatted, s
 
@@ -101,10 +102,12 @@ def dazu(message):
     text = mest[1]
     del mest
     datum, text = extract_date(text)
-    if not datum: 
+    print(' current date is ' + str(datum))
+    if datum == None: 
         datum, text = extract_day(text)
-        try: to_date(datum)
-        except: pass
+        try: 
+            datum = to_date(datum)
+        except Exception as e: print(e)
     try: 
         print('checking request, subject: ' + fach + ', task: ' + text + ', deadline: ' + datum) 
     except: 
@@ -122,6 +125,7 @@ def dazu(message):
     elif not datum: # checking date
         bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
     else:
+        print(datum)
         add_task(fach, datum, text)
         bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
 
@@ -129,6 +133,7 @@ def dazu(message):
 def zeige(message):
     # variables
     chid = message.chat.id
+    msg = ''
     sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
     show_requests = message.text.split(' ')
     show_subs = []
@@ -146,13 +151,17 @@ def zeige(message):
     if len(show_subs) > 0:
         msg = 'HÜs:\n'
     else: # if not show all hw
-        msg = 'ALLE HÜS:\n'
+        pass
     # ouput tasks
     show_subs = show_tasks(show_subs)
-    for sub in show_subs:
-        msg += '- ' + sub + ' -\n'
-        for task in show_subs[sub]:
-            msg += 'bis ' + str(task['dead']) + ': ' + task['task'] + '\n'
+    if show_subs == {}:
+        msg = 'Keine HÜs auf!'
+    else:
+        for sub in show_subs:
+            msg += '- ' + sub + ' -\n'
+            for task in show_subs[sub]:
+                datum = to_day(task['dead'])
+                msg += 'bis ' + datum + ': ' + task['task'] + '\n'
     bot.send_message(chid, msg)
 """
     if len(hu) == 0:
