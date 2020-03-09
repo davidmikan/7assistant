@@ -3,7 +3,7 @@ import re
 from datetime import datetime, timedelta
 import difflib
 
-# variableeeeeen
+# variableeeeees
 bot = telebot.TeleBot('940159686:AAH2JNssVMyB0Dc0IKV0xxfZ3mA-LPY0kmg')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
@@ -29,7 +29,7 @@ def to_date(weekday):
     d = now + d
     return d.date()
 
-def ext(s):
+def extract_date(s):
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
     if x:
@@ -50,16 +50,17 @@ def ext(s):
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
             dif = dat_formatted - now
             if dif.days < 1:
-                return None
+                return None, s
         except Exception as e:
             print(e)
-            return None
+            return None, s
     else:
-        return None
-    print('deadline: ' + dat_formatted)
+        return None, s
+
+    print('deadline: ' + str(dat_formatted))
     return dat_formatted, s
 
-def tags(s):
+def extract_day(s):
     p = re.compile(r'montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag', re.I)
     tag = p.search(s)
     if tag:
@@ -69,14 +70,18 @@ def tags(s):
         tag = tag.lower()
         tag = tag.capitalize()
     else:
-        tag = False
+        return None, s
     return tag, s
 
-def add_task():
-    return
+def add_task(fach, datum, text):
+    neu = {'dead': datum, 'task': text}
+    if fach in hu:
+            hu[fach].append(neu)
+    else:
+        hu[fach] = [neu]
 
 # message handlers
-@bot.message_handler(commands = ['dazu'])
+@bot.message_handler(commands = ['add'])
 def dazu(message):
     # variables
     mest = message.text.split(' ', 2)
@@ -84,8 +89,15 @@ def dazu(message):
     fach = mest[0].lower()
     text = mest[1]
     del mest
-    datum, text = ext(text)
-    print('received request, subject: ' + fach + ', task: ' + text + ', deadline: ' + datum)
+    datum, text = extract_date(text)
+    if not datum: 
+        datum, text = extract_day(text)
+        try: to_date(datum)
+        except: pass
+    try: 
+        print('checking request, subject: ' + fach + ', task: ' + text + ', deadline: ' + datum) 
+    except: 
+        print('checking request, variables failed.')
     # checking variables
     if not fach in subs: # checking subject
         try:
@@ -96,29 +108,13 @@ def dazu(message):
             print('couldn\'t find subject ' + fach)
             bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928')
         return
-    if datum: # checking date
-        datum = to_day(datum)
-        try:
-            neu = {'dead': str(datum.day) + "." + str(datum.month) + ".", 'task': text}
-        except:
-            neu = {'dead': datum, 'task': text}
-        if fach in hu:
-            hu[fach].append(neu)
-        else:
-            hu[fach] = [neu]
+    elif not datum: # checking date
+        bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
     else:
-        tag, s = tags(text)
-        if tag in weekdays:
-            tag = to_date(tag)
-            neu = {'dead': str(tag.day) + '.' + str(tag.month) + '.', 'task': s}
-            if fach in hu:
-                hu[fach].append(neu)
-            else:
-                hu[fach] = [neu]
-        else:
-            bot.reply_to(message, 'Falsches Eingabeformat')
+        add_task(fach, datum, text)
+        bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
 
-@bot.message_handler(commands = ['zeige'])
+@bot.message_handler(commands = ['show'])
 def zeige(message):
     chid = message.chat.id
     sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
