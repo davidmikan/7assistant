@@ -9,7 +9,8 @@ subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', '
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
-json_hws = 'homeworks.json'
+json_hws = 'homeworks.txt'
+
 
 def to_day(datum):
     test = datum - now.date()
@@ -110,6 +111,8 @@ def write_json(dictionary, targetfile):
 			json.dump(dictionary, jsonfile, indent=5)
 	except Exception as ex:
 		print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
+		
+write_json(hu, json_hws) #ich habe die json initialisiert werde das aber demnächst in die funktion selbst einbauen
 
 @bot.message_handler(commands = ['add'])
 def dazu(message):
