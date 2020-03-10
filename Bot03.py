@@ -163,34 +163,7 @@ def zeige(message):
                 datum = to_day(task['dead'])
                 msg += 'bis ' + datum + ': ' + task['task'] + '\n'
     bot.send_message(chid, msg)
-"""
-    if len(hu) == 0:
-        bot.send_sticker(chid, sticker)
-        bot.send_message(chid, 'Keine HÜs!')
-    else:
-        if len(show_requests) > 0:
-            msg = 'HÜs:\n'
-            for r in show_requests:
-                print(r)
-                msg += '- ' + r + ' -\n'
-                try:
-                    y = hu[r]
-                    for z in y:
-                        msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
-                except:
-                    if not r in subs:
-                        
-                    else: 
-                        msg += 'Keine HÜs in ' + str(r) + ' \U0001F601' + '!\n'
-        else:
-            msg ='ALLE HÜS:\n'
-            for x in hu:
-                y = hu[x]
-                msg += '- ' + x + ' -\n'
-                for z in y:
-                    msg += 'bis ' + str(z['dead']) + ': ' + z['task'] + '\n'
-        bot.send_message(chid, msg)
-"""
+
 @bot.message_handler(commands = ['del'])
 def dele(message):
     hu.clear()
