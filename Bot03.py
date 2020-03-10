@@ -2,6 +2,7 @@ import telebot
 import re
 from datetime import datetime, timedelta
 import difflib
+import json
 
 # variableeeeees
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
@@ -91,6 +92,15 @@ def show_tasks(tasks):
         except:
             continue
     return show_subs
+	
+def read_json(targetfile):
+	with open(targetfile, 'r') as json_file:
+		dictionary = json.load(json_file)
+	return dictionary
+
+def write_json(dictionary, targetfile):
+	with open(targetfile, 'w') as jsonfile:
+		json.dump(dictionary, jsonfile, indent=5)
 
 # message handlers
 @bot.message_handler(commands = ['add'])
