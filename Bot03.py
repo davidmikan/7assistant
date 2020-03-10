@@ -129,11 +129,6 @@ def dazu(message):
         print(datum)
         add_task(fach, datum, text)
         bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
-        # markup = telebot.types.ReplyKeyboardMarkup(row_width=2)
-        # for sub in subs:
-        #     markup.add(telebot.types.KeyboardButton(sub))
-        # chid = message.chat.id
-        # bot.send_message(chid, "Für welches Fach?", reply_markup=markup)
 
 @bot.message_handler(commands = ['show'])
 def zeige(message):
