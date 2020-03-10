@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import difflib
 
 # variableeeeees
-bot = telebot.TeleBot('940159686:AAH2JNssVMyB0Dc0IKV0xxfZ3mA-LPY0kmg')
+bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
@@ -49,7 +49,7 @@ def extract_date(s):
         try:
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
             dif = dat_formatted - now
-            if dif.days < 1:
+            if dif.days < 0:
                 return None, s
         except Exception as e:
             print(e)
@@ -98,6 +98,7 @@ def dazu(message):
     # variables
     mest = message.text.split(' ', 2)
     del mest[0]
+    if len(mest) < 2: bot.reply_to(message, '???')
     fach = mest[0].lower()
     text = mest[1]
     del mest
@@ -128,6 +129,11 @@ def dazu(message):
         print(datum)
         add_task(fach, datum, text)
         bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
+        # markup = telebot.types.ReplyKeyboardMarkup(row_width=2)
+        # for sub in subs:
+        #     markup.add(telebot.types.KeyboardButton(sub))
+        # chid = message.chat.id
+        # bot.send_message(chid, "Für welches Fach?", reply_markup=markup)
 
 @bot.message_handler(commands = ['show'])
 def zeige(message):
@@ -144,24 +150,23 @@ def zeige(message):
             show_subs.append(hw)
         else:
             try: 
-                simsub = difflib.get_close_matches(r, subs, n=1)
+                simsub = difflib.get_close_matches(hw, subs, n=1)
                 bot.reply_to(message, hw + '? Meintest du ' + simsub[0] + '?\n')
             except:
                 bot.reply_to(message, 'Ich kenne das Fach ' + hw + ' nicht :(' + '\n')
     if len(show_subs) > 0:
         msg = 'HÜs:\n'
     else: # if not show all hw
-        pass
+        show_subs = show_tasks(show_subs)
+        if show_subs == {}:
+            msg = 'Keine HÜs auf!'
+        else:
+            for sub in show_subs:
+                msg += '- ' + sub + ' -\n'
+                for task in show_subs[sub]:
+                    datum = to_day(task['dead'])
+                    msg += 'bis ' + datum + ': ' + task['task'] + '\n'
     # ouput tasks
-    show_subs = show_tasks(show_subs)
-    if show_subs == {}:
-        msg = 'Keine HÜs auf!'
-    else:
-        for sub in show_subs:
-            msg += '- ' + sub + ' -\n'
-            for task in show_subs[sub]:
-                datum = to_day(task['dead'])
-                msg += 'bis ' + datum + ': ' + task['task'] + '\n'
     bot.send_message(chid, msg)
 
 @bot.message_handler(commands = ['del'])
