@@ -93,13 +93,19 @@ def show_tasks(tasks):
     return show_subs
 	
 def read_json(targetfile):
-	with open(targetfile, 'r') as json_file:
-		dictionary = json.load(json_file)
-	return dictionary
+	try:
+		with open(targetfile, 'r') as json_file:
+			dictionary = json.load(json_file)
+		return dictionary
+	except Exception as ex:
+		print('xxxxxxx\nReading JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
 
 def write_json(dictionary, targetfile):
-	with open(targetfile, 'w') as jsonfile:
-		json.dump(dictionary, jsonfile, indent=5)
+	try:
+		with open(targetfile, 'w') as jsonfile:
+			json.dump(dictionary, jsonfile, indent=5)
+	except Exception as ex:
+		print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
 
 @bot.message_handler(commands = ['add'])
 def dazu(message):
