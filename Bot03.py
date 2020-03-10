@@ -9,12 +9,12 @@ subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', '
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
-json_hws = 'homeworks.txt'
+json_hws = 'homeworks.json'
 
 
-def to_day(datum):
+def to_day(datum, forjson):
     test = datum - now.date()
-    if test.days <= 7:
+    if test.days <= 7 and not forjson:
         wday = datum.weekday()
         datum = weekdays[wday]
     else:
@@ -23,7 +23,6 @@ def to_day(datum):
     return datum
 
 def to_date(weekday):
-    print(weekday)
     d = weekdays.index(weekday) - now.weekday()
     if d < 1:
         d = 7 + d
@@ -59,7 +58,6 @@ def extract_date(s):
     else:
         return None, s
     dat_formatted = dat_formatted.date()
-    print('deadline: ' + str(dat_formatted))
     return dat_formatted, s
 
 def extract_day(s):
@@ -79,9 +77,10 @@ def add_task(fach, datum, text):
     neu = {'dead': datum, 'task': text}
     hu = read_json(json_hws)
     if fach in hu:
-            hu[fach].append(neu)
+        hu[fach].append(neu)
     else:
-        hu[fach] = [neu]
+        hu[fach] = []
+        hu[fach].append(neu)
     write_json(hu, json_hws)
 
 def show_tasks(tasks):
@@ -98,21 +97,30 @@ def show_tasks(tasks):
     return show_subs
 	
 def read_json(targetfile):
-	try:
-		with open(targetfile, 'r') as json_file:
-			dictionary = json.load(json_file)
-		return dictionary
-	except Exception as ex:
-		print('xxxxxxx\nReading JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
+    try:
+        with open(targetfile, 'r') as json_file:
+            dictionary = json.load(json_file)
+    except Exception as e:
+        print('xxxxxxx\nReading JSON file failed:\n{}\nxxxxxxx\n'.format(e))
+    for sub in dictionary:
+        sub = dictionary[sub]
+        for hw in sub:
+            hw['dead'], s = extract_date(hw['dead'])
+    return dictionary
 
 def write_json(dictionary, targetfile):
-	try:
-		with open(targetfile, 'w') as jsonfile:
-			json.dump(dictionary, jsonfile, indent=5)
-	except Exception as ex:
-		print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
+    for sub in dictionary:
+        sub = dictionary[sub] # list with dictionaries
+        for hw in sub:
+            hw['dead'] = to_day(hw['dead'], True)
+    try:
+        with open(targetfile, 'w') as jsonfile:
+            json.dump(dictionary, jsonfile, indent=5)
+    except Exception as ex:
+        print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
+    return dictionary
 		
-write_json(hu, json_hws) #ich habe die json initialisiert werde das aber demnächst in die funktion selbst einbauen
+#write_json(hu, json_hws) #ich habe die json initialisiert werde das aber demnächst in die funktion selbst einbauen
 
 @bot.message_handler(commands = ['add'])
 def dazu(message):
@@ -124,7 +132,6 @@ def dazu(message):
     text = mest[1]
     del mest
     datum, text = extract_date(text)
-    print(' current date is ' + str(datum))
     if datum == None: 
         datum, text = extract_day(text)
         try: 
@@ -147,7 +154,6 @@ def dazu(message):
     elif not datum: # checking date
         bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
     else:
-        print(datum)
         add_task(fach, datum, text)
         bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
 
@@ -181,7 +187,7 @@ def zeige(message):
             msg += '- ' + str(sub) + ' - \n'
             for hw in show_subs[sub]:
                 print(hw)
-                datum = to_day(hw['dead'])
+                datum = to_day(hw['dead'], False)
                 msg += 'bis ' + str(datum) + ': ' + str(hw['task']) + '\n'
         bot.send_message(chid, msg)
 

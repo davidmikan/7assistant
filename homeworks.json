@@ -1,4 +1,14 @@
 {
-     "be": [
+     "mathe": [
           {
-               "dead": 
+               "dead": "1.5.",
+               "task": " 123"
+          }
+     ],
+     "deutsch": [
+          {
+               "dead": "13.3.",
+               "task": " lesen"
+          }
+     ]
+}
