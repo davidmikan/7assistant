@@ -9,6 +9,7 @@ subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', '
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
+json_hws = 'homeworks.json'
 
 def to_day(datum):
     test = datum - now.date()
@@ -75,12 +76,15 @@ def extract_day(s):
 
 def add_task(fach, datum, text):
     neu = {'dead': datum, 'task': text}
+    hu = read_json(json_hws)
     if fach in hu:
             hu[fach].append(neu)
     else:
         hu[fach] = [neu]
+    write_json(hu, json_hws)
 
 def show_tasks(tasks):
+    hu = read_json(json_hws)
     print(hu)
     show_subs = {}
     for x in tasks:
@@ -180,10 +184,12 @@ def zeige(message):
 
 @bot.message_handler(commands = ['del'])
 def dele(message):
-    hu.clear()
+    clear = {}
+    write_json(clear, json_hws)
 
 @bot.message_handler(commands = ['print'])
 def pr(message):
+    hu = read_json(json_hws)
     print(hu)
 
 while True:
