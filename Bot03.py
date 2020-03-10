@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import difflib
 import json
 
-# variableeeeees
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
@@ -84,13 +83,13 @@ def add_task(fach, datum, text):
 def show_tasks(tasks):
     print(hu)
     show_subs = {}
-    if len(tasks) == 0:
-        show_subs = hu
     for x in tasks:
         try:
             show_subs[x] = hu[x]
         except:
             continue
+    if len(tasks) == 0:
+        show_subs = hu
     return show_subs
 	
 def read_json(targetfile):
@@ -102,7 +101,6 @@ def write_json(dictionary, targetfile):
 	with open(targetfile, 'w') as jsonfile:
 		json.dump(dictionary, jsonfile, indent=5)
 
-# message handlers
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     # variables
@@ -142,37 +140,37 @@ def dazu(message):
 
 @bot.message_handler(commands = ['show'])
 def zeige(message):
-    # variables
     chid = message.chat.id
     msg = ''
     sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
     show_requests = message.text.split(' ')
     show_subs = []
     del show_requests[0]
-    # determining subs to be checked
     for hw in show_requests:
         if hw in subs:
             show_subs.append(hw)
         else:
             try: 
                 simsub = difflib.get_close_matches(hw, subs, n=1)
-                bot.reply_to(message, hw + '? Meintest du ' + simsub[0] + '?\n')
+                bot.reply_to(message, hw + '? Meintest du ' + simsub[0] + '?')
+                return
             except:
-                bot.reply_to(message, 'Ich kenne das Fach ' + hw + ' nicht :(' + '\n')
-    if len(show_subs) > 0:
-        msg = 'HÜs:\n'
-    else: # if not show all hw
-        show_subs = show_tasks(show_subs)
-        if show_subs == {}:
-            msg = 'Keine HÜs auf!'
-        else:
-            for sub in show_subs:
-                msg += '- ' + sub + ' -\n'
-                for task in show_subs[sub]:
-                    datum = to_day(task['dead'])
-                    msg += 'bis ' + datum + ': ' + task['task'] + '\n'
-    # ouput tasks
-    bot.send_message(chid, msg)
+                bot.reply_to(message, 'Ich kenne das Fach ' + hw + ' nicht :(')
+                return
+    show_subs = show_tasks(show_subs) # returns dictionary with lists of dictionaries!
+    print(show_subs)
+    if len(show_subs) == 0: 
+        bot.send_sticker(chid, sticker)
+        bot.send_message(chid, 'Keine HÜs!')
+    else:
+        msg = 'HÜs: \n'
+        for sub in show_subs:
+            msg += '- ' + str(sub) + ' - \n'
+            for hw in show_subs[sub]:
+                print(hw)
+                datum = to_day(hw['dead'])
+                msg += 'bis ' + str(datum) + ': ' + str(hw['task']) + '\n'
+        bot.send_message(chid, msg)
 
 @bot.message_handler(commands = ['del'])
 def dele(message):

@@ -1,10 +1,8 @@
 # 7assistant
-## Introduction
 ### What does this bot do?
 
 This telegram bot stores your classes homeworks and displays them on demand in telegram groups.
 
-## How to use
 ### Commands
 
 You only need 3 commands: 
