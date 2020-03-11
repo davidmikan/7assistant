@@ -14,7 +14,6 @@ now = datetime.now()
 json_hws = 'homeworks.json'
 chid = ''
 
-
 def to_day(datum, forjson):
     if forjson == False: print('converting ' + str(datum) + '...')
     test = datum - now.date()
