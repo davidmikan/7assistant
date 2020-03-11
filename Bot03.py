@@ -7,7 +7,7 @@ import schedule
 import time
 
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
-subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
+subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be', 'reminder']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
@@ -16,24 +16,28 @@ chid = ''
 
 
 def to_day(datum, forjson):
+    if forjson == False: print('converting ' + str(datum) + '...')
     test = datum - now.date()
     if test.days <= 7 and not forjson:
         wday = datum.weekday()
         datum = weekdays[wday]
     else:
         datum = str(datum.day) + '.' + str(datum.month) + '.'
-    print('converted to ' + datum)
+    if forjson == False: print('converted to ' + str(datum) + '!')
     return datum
 
 def to_date(weekday):
+    print('converting ' + str(weekday) + '...')
     d = weekdays.index(weekday) - now.weekday()
     if d < 1:
         d = 7 + d
     d = timedelta(days = d)
     d = now + d
+    print('converted to ' + str(d.date()) + '!')
     return d.date()
 
-def extract_date(s):
+def extract_date(s, forjson):
+    if forjson == False: print('extracting date from ' + str(s) + '...')
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
     if x:
@@ -54,16 +58,19 @@ def extract_date(s):
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
             dif = dat_formatted - now
             if dif.days < 0:
+                if forjson == False: print('extraction failed, date ' + str(dat_formatted) + ' is today/in the past')
                 return None, s
         except Exception as e:
-            print(e)
+            if forjson == False: print('extraction failed, error: ' + str(e))
             return None, s
     else:
         return None, s
     dat_formatted = dat_formatted.date()
+    if forjson == False: print('extracted ' + str(dat_formatted) + '!')
     return dat_formatted, s
 
 def extract_day(s):
+    print('extracting day from ' + str(s) + '...')
     p = re.compile(r'montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag', re.I)
     tag = p.search(s)
     if tag:
@@ -73,10 +80,13 @@ def extract_day(s):
         tag = tag.lower()
         tag = tag.capitalize()
     else:
+        print('extraction failed, found no day')
         return None, s
+    print('extracted ' + str(tag) + '!')
     return tag, s
 
 def add_task(fach, datum, text):
+    print('adding task: ' + str(fach) + ', date + text:' + str(datum) + ', ' + str(text) + '...')
     neu = {'dead': datum, 'task': text}
     hu = read_json(json_hws)
     if fach in hu:
@@ -85,6 +95,7 @@ def add_task(fach, datum, text):
         hu[fach] = []
         hu[fach].append(neu)
     write_json(hu, json_hws)
+    print('added!')
 
 def show_tasks(tasks):
     hu = read_json(json_hws)
@@ -97,9 +108,11 @@ def show_tasks(tasks):
             continue
     if len(tasks) == 0:
         show_subs = hu
+    print('showing subs: ' + str(show_subs))
     return show_subs
 	
 def read_json(targetfile):
+    print('fetching homeworks from json...')
     try:
         with open(targetfile, 'r') as json_file:
             dictionary = json.load(json_file)
@@ -108,10 +121,12 @@ def read_json(targetfile):
     for sub in dictionary:
         sub = dictionary[sub]
         for hw in sub:
-            hw['dead'], s = extract_date(hw['dead'])
+            hw['dead'], s = extract_date(hw['dead'], True)
+    print('succesfullly fetched!')
     return dictionary
 
 def write_json(dictionary, targetfile):
+    print('writing to json, homeworks: ' + str(dictionary))
     for sub in dictionary:
         sub = dictionary[sub] # list with dictionaries
         for hw in sub:
@@ -121,12 +136,14 @@ def write_json(dictionary, targetfile):
             json.dump(dictionary, jsonfile, indent=5)
     except Exception as ex:
         print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
+    print('writing succesful!')
     return dictionary
 		
 #write_json(hu, json_hws) #ich habe die json initialisiert werde das aber demnächst in die funktion selbst einbauen
 
 @bot.message_handler(commands = ['add'])
 def dazu(message):
+    print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     # variables
     mest = message.text.split(' ', 2)
     del mest[0]
@@ -136,34 +153,36 @@ def dazu(message):
     fach = mest[0].lower()
     text = mest[1]
     del mest
-    datum, text = extract_date(text)
+    datum, text = extract_date(text, False)
     if datum == None: 
         datum, text = extract_day(text)
         try: 
             datum = to_date(datum)
         except Exception as e: print(e)
     try: 
-        print('checking request, subject: ' + fach + ', task: ' + text + ', deadline: ' + datum) 
+        print('checking request, subject: ' + str(fach) + ', task: ' + str(text) + ', deadline: ' + (datum)) 
     except: 
         print('checking request, variables failed.')
     # checking variables
     if not fach in subs: # checking subject
         try:
             similar = difflib.get_close_matches(fach, subs, n=1)
-            print('couldn\'t find subject ' + fach + ', suggesting ' + similar[0])
             bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
         except:
-            print('couldn\'t find subject ' + fach)
             bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928')
+        print('COULD NOT ADD TASK, WRONG SUBJECT\n' + '-'*20)
         return
     elif not datum: # checking date
         bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
+        print('COULD NOT ADD TASK, WRONG DATE\n' + '-'*20)
     else:
         add_task(fach, datum, text)
         bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
+        print('SUCCESFULLY ADDED TASK\n' + '-'*20)
 
 @bot.message_handler(commands = ['show'])
 def zeige(message):
+    print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     chid = message.chat.id
     msg = ''
     sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
@@ -176,16 +195,19 @@ def zeige(message):
         else:
             try: 
                 simsub = difflib.get_close_matches(hw, subs, n=1)
-                bot.reply_to(message, hw + '? Meintest du ' + simsub[0] + '?')
+                bot.reply_to(message, str(hw) + '? Meintest du ' + str(simsub[0]) + '?')
+                print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(hw) + '\n' + '-'*20)
                 return
             except:
-                bot.reply_to(message, 'Ich kenne das Fach ' + hw + ' nicht :(')
+                bot.reply_to(message, 'Ich kenne das Fach ' + str(hw) + ' nicht :(')
+                print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(hw) + '\n' + '-'*20)
                 return
     show_subs = show_tasks(show_subs) # returns dictionary with lists of dictionaries!
     print(show_subs)
     if len(show_subs) == 0: 
         bot.send_sticker(chid, sticker)
         bot.send_message(chid, 'Keine HÜs!')
+        print('SUCCESFUL, NO TASKS\n' + '-'*20)
     else:
         msg = 'HÜs: \n'
         for sub in show_subs:
@@ -195,19 +217,30 @@ def zeige(message):
                 datum = to_day(hw['dead'], False)
                 msg += 'bis ' + str(datum) + ': ' + str(hw['task']) + '\n'
         bot.send_message(chid, msg)
+        print('SUCCESFULLY DISPLAYED TASKS\n' + '-'*20)
 
 @bot.message_handler(commands = ['del'])
 def dele(message):
+    print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     clear = {}
     write_json(clear, json_hws)
+    print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
 
 @bot.message_handler(commands = ['print'])
 def pr(message):
     hu = read_json(json_hws)
     print(hu)
 
+def show_daily():
+    now = datetime.now()
+    return
+
+schedule.every().minute.at(":30").do(show_daily)
+
 while True:
     try:
+        schedule.run_pending()
+        time.sleep(1)
         bot.polling(interval=1)
     except Exception as e:
         continue
