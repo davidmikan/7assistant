@@ -3,6 +3,8 @@ import re
 from datetime import datetime, timedelta
 import difflib
 import json
+import schedule
+import time
 
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be']
@@ -10,6 +12,7 @@ weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 json_hws = 'homeworks.json'
+chid = ''
 
 
 def to_day(datum, forjson):
@@ -127,7 +130,9 @@ def dazu(message):
     # variables
     mest = message.text.split(' ', 2)
     del mest[0]
-    if len(mest) < 2: bot.reply_to(message, '???')
+    if len(mest) < 2: 
+        bot.reply_to(message, '???')
+        return
     fach = mest[0].lower()
     text = mest[1]
     del mest
