@@ -12,8 +12,7 @@ weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 json_hws = 'homeworks.json'
-chid = ''
-
+chid = '-443574063' #für siebenaalpha gruppe
 
 def to_day(datum, forjson):
     if forjson == False: print('converting ' + str(datum) + '...')
@@ -138,9 +137,29 @@ def write_json(dictionary, targetfile):
         print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
     print('writing succesful!')
     return dictionary
-		
-#write_json(hu, json_hws) #ich habe die json initialisiert werde das aber demnächst in die funktion selbst einbauen
 
+def show_daily():
+    now = datetime.now()
+    hu = read_json(json_hws)
+    hu_actual = {}
+    for fach in hu:
+        tasks = hu[fach]
+        tasks_actual = []
+        for onetask in tasks:
+            deadline = onetask['dead']
+            print('deadline_datum: ' + str(deadline))
+            if deadline.month == now.month and int(deadline.day)-int(now.day) == 1:
+                tasks_actual.append(onetask)
+        hu_actual[fach] = tasks_actual
+    msg = 'HÜ bis morgen:\n'
+    for fach in hu_actual:
+        msg += '-' + fach + '-\n'
+        for x in hu_actual[fach]:
+            datum = str(x['dead'].day) + '.' + str(x['dead'].month)
+            msg += 'bis ' + datum + ' ' + x['task'] + '\n'
+    bot.send_message(chid, msg)
+
+		
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
@@ -231,11 +250,12 @@ def pr(message):
     hu = read_json(json_hws)
     print(hu)
 
-def show_daily():
-    now = datetime.now()
-    return
+@bot.message_handler(commands = ['id'])
+def idf(message):
+    chid = message.chat.id
+    print(chid)
 
-schedule.every().minute.at(":30").do(show_daily)
+schedule.every(10).seconds.do(show_daily())
 
 while True:
     try:
