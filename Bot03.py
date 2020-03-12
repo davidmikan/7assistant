@@ -265,31 +265,17 @@ def idf(message):
     chid = message.chat.id
     print(chid)
 
-<<<<<<< HEAD
-# schedule.every(10).seconds.do(show_daily)
-# show_daily()
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
-
-# def handle_messages(messages):
-# 	for message in messages:
-# 		# Do something with the message
-# 		# bot.reply_to(message, 'Hi')
-
-# bot.set_update_listener(handle_messages)
-=======
 #def handle_messages(messages):
 	#for message in messages:
 		# Do something with the message
 		#bot.reply_to(message, 'Hi')
 
-class ScheduleThread(threading.Thread):
-    def run(self):
-        schedule.every(10).seconds.do(show_daily)
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+# class ScheduleThread(threading.Thread):
+#     def run(self):
+#         schedule.every(10).seconds.do(show_daily)
+#         while True:
+#             schedule.run_pending()
+#             time.sleep(1)
 
 class BotThread(threading.Thread):
     def run(self):
@@ -300,13 +286,8 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
         
-        
-
 #bot.set_update_listener(handle_messages)
 thread1 = BotThread()
-thread2 = ScheduleThread()
+#thread2 = ScheduleThread()
 thread1.start()
-thread2.start()
-
->>>>>>> master
-
+#thread2.start()
