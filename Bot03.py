@@ -270,12 +270,12 @@ def idf(message):
 #     schedule.run_pending()
 #     time.sleep(1)
 
-def handle_messages(messages):
-	for message in messages:
-		# Do something with the message
-		bot.reply_to(message, 'Hi')
+# def handle_messages(messages):
+# 	for message in messages:
+# 		# Do something with the message
+# 		# bot.reply_to(message, 'Hi')
 
-bot.set_update_listener(handle_messages)
+# bot.set_update_listener(handle_messages)
 
 while True:
     try:
