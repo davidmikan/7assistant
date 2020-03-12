@@ -5,6 +5,7 @@ import difflib
 import json
 import schedule
 import time
+import threading
 
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be', 'reminder']
@@ -264,22 +265,33 @@ def idf(message):
     chid = message.chat.id
     print(chid)
 
-# schedule.every(10).seconds.do(show_daily)
-# show_daily()
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
-
-def handle_messages(messages):
-	for message in messages:
+#def handle_messages(messages):
+	#for message in messages:
 		# Do something with the message
-		bot.reply_to(message, 'Hi')
+		#bot.reply_to(message, 'Hi')
 
-bot.set_update_listener(handle_messages)
+class ScheduleThread(threading.Thread):
+    def run(self):
+        schedule.every(10).seconds.do(show_daily)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
-while True:
-    try:
-        bot.polling(interval=1)
-    except Exception as e:
-        print(str(e))
-        continue
+class BotThread(threading.Thread):
+    def run(self):
+        while True:
+            try:
+                bot.polling(interval=1)
+            except Exception as e:
+                print(str(e))
+                continue
+        
+        
+
+#bot.set_update_listener(handle_messages)
+thread1 = BotThread()
+thread2 = ScheduleThread()
+thread1.start()
+thread2.start()
+
+
