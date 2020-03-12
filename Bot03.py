@@ -139,19 +139,28 @@ def write_json(dictionary, targetfile):
     return dictionary
 
 def show_daily():
+    print('test')
     now = datetime.now()
     hu = read_json(json_hws)
     hu_actual = {}
     for fach in hu:
         tasks = hu[fach]
         tasks_actual = []
-        for onetask in tasks:
-            deadline = onetask['dead']
+        for task in tasks:
+            print(str(task))
+            time.sleep(5)
+            deadline = task['dead']
             print('deadline_datum: ' + str(deadline))
-            if deadline.month == now.month and int(deadline.day)-int(now.day) == 1:
-                tasks_actual.append(onetask)
+            if deadline == None:
+                del fach[fach.index(task)]
+            try: 
+                if deadline.month == now.month and int(deadline.day)-int(now.day) == 1:
+                    tasks_actual.append(task)
+            except: pass
         hu_actual[fach] = tasks_actual
-    msg = 'HÜ bis morgen:\n'
+    write_json(hu, json_hws)
+    
+    msg = 'HÜs bis morgen:\n'
     for fach in hu_actual:
         msg += '-' + fach + '-\n'
         for x in hu_actual[fach]:
@@ -255,12 +264,22 @@ def idf(message):
     chid = message.chat.id
     print(chid)
 
-schedule.every(10).seconds.do(show_daily())
+# schedule.every(10).seconds.do(show_daily)
+# show_daily()
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
+
+def handle_messages(messages):
+	for message in messages:
+		# Do something with the message
+		bot.reply_to(message, 'Hi')
+
+bot.set_update_listener(handle_messages)
 
 while True:
     try:
-        schedule.run_pending()
-        time.sleep(1)
         bot.polling(interval=1)
     except Exception as e:
+        print(str(e))
         continue
