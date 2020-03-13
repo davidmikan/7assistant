@@ -6,7 +6,6 @@ import json
 import schedule
 import time
 import threading
-import random
 
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be', 'reminder']
@@ -306,13 +305,37 @@ def zeige(message):
 @bot.message_handler(commands = ['del'])
 def dele(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
-    clear = {}
-    write_json(clear, json_hws)
-    print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
+    msg = message.text.split(' ')
+    del msg[0]
+    if not msg:
+        clear = {}
+        write_json(clear, json_hws)
+        print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
+    else:
+        sub = msg[0].lower()
+        hu = read_json(json_hws)
+        if sub in subs:
+            del hu[sub]
+            write_json(hu, json_hws)
+            bot.reply_to(message, 'Gelöscht!')
+            print('Sucessfully deleted tasks from' + sub + '-'*20)
+        else:
+            try: 
+                simsub = difflib.get_close_matches(sub, subs, n=1)
+                bot.reply_to(message, str(sub) + '? Meintest du ' + str(simsub[0]) + '?')
+                print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
+                return
+            except:
+                bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht :(')
+                print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
+                return
+        
+        
+  
 
 @bot.message_handler(commands = ['info'])
 def info(message):
-    bot.send_message(chid, 'Hallo! \U+1F9BE Ich bin 7Assistant, ich helfe Klassengruppen mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle bescheid geben!')
+    bot.send_message(chid,'Hallo! Ich bin 7Assistant, ich helfe Klassengruppen mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle bescheid geben!')
 
 @bot.message_handler(commands = ['print'])
 def pr(message):
