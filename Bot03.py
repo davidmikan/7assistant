@@ -13,7 +13,7 @@ weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 json_hws = 'homeworks.json'
-chid = '-443574063' #für siebenaalpha gruppe
+chid = '-1001256312641' #für siebenaalpha gruppe
 
 def to_day(datum, forjson):
     if forjson == False: print('converting ' + str(datum) + '...')
@@ -240,7 +240,7 @@ def zeige(message):
     else:
         msg = 'HÜs: \n'
         for sub in show_subs:
-            msg += '- ' + str(sub) + ' - \n'
+            msg += '- ' + str(sub).capitalize() + ' - \n'
             for hw in show_subs[sub]:
                 print(hw)
                 datum = to_day(hw['dead'], False)
@@ -254,6 +254,10 @@ def dele(message):
     clear = {}
     write_json(clear, json_hws)
     print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
+
+@bot.message_handler(commands = ['info'])
+def info(message):
+    bot.send_message(chid, 'Hallo! Ich bin 7Assistant, ich helfe Klassengruppen mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle bescheid geben!')
 
 @bot.message_handler(commands = ['print'])
 def pr(message):
@@ -285,7 +289,8 @@ class BotThread(threading.Thread):
             except Exception as e:
                 print(str(e))
                 continue
-        
+
+#show_daily()
 #bot.set_update_listener(handle_messages)
 thread1 = BotThread()
 #thread2 = ScheduleThread()
