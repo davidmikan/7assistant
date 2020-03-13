@@ -16,6 +16,8 @@ json_hws = 'homeworks.json'
 json_sav = 'savedhws.json'
 chid = '-1001256312641' #für siebenaalpha gruppe
 
+bot.send_message(chid, 'Bot successfully started! ^^')
+
 def to_day(datum, forjson):
     if forjson == False: print('converting ' + str(datum) + '...')
     test = datum - now.date()
@@ -190,6 +192,12 @@ def show_daily(reminder=False):
         print('Sent reminder sucessfully...')
                  
 def add_sub(message):
+    markup = telebot.types.ReplyKeyboardMarkup(row_width=2)
+    itembtn1 = telebot.types.KeyboardButton('a')
+    itembtn2 = telebot.types.KeyboardButton('v')
+    itembtn3 = telebot.types.KeyboardButton('d')
+    markup.add(itembtn1, itembtn2, itembtn3)
+    bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?', reply_markup=markup)
     if message.text in subs:
         fach = message.text
         bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
@@ -341,8 +349,6 @@ def rev(message):
     hu_sav = read_json(json_sav)
     write_json(hu_sav, json_hws)
     write_json(hu, json_sav)
-     
-  
 
 @bot.message_handler(commands = ['info'])
 def info(message):
