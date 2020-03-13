@@ -329,9 +329,6 @@ def dele(message):
                 bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht :(')
                 print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
                 return
-        
-        
-  
 
 @bot.message_handler(commands = ['info'])
 def info(message):

@@ -10,7 +10,7 @@ ideen = []
 
 def error(chid, errortype):
     if errortype == 'subject':
-        bot.send_message(chid, 'Offensichtlich hast du nichts verstanden. Für Hilfe mit Fächern schreibe /help subjects.')
+        bot.send_message(chid, 'Offensichtlich hast du nichts verstanden. Für eine Liste aller Fächer schreibe /help subjects.')
     elif errortype == 'date':
         bot.send_message(chid, 'Nunja, ein Datum sollte man schon richtig benutzen können.')
 
@@ -26,7 +26,7 @@ def handle_messages(messages):
         msg = ''
         x = random.randint(1, 6)
         if any(ext in text.lower() for ext in triggered) and x == 1:
-            msg = 'Kann man helfen?'
+            msg = 'Gibt\'s Probleme?? \nWill man welche????'
         if msg: bot.reply_to(message, msg)
         
 bot.set_update_listener(handle_messages)
