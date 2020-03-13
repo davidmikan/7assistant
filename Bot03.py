@@ -6,6 +6,7 @@ import json
 import schedule
 import time
 import threading
+import random
 
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
 subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be', 'reminder']
@@ -139,36 +140,55 @@ def write_json(dictionary, targetfile):
     print('writing succesful!')
     return dictionary
 
-def show_daily():
-    print('test')
-    now = datetime.now()
+def show_daily(reminder=False):
+    print('Start excecution of show_daily() ...')
+    now = datetime.now().date()
+    print('now:',now)
     hu = read_json(json_hws)
-    hu_actual = {}
-    for fach in hu:
-        tasks = hu[fach]
-        tasks_actual = []
-        for task in tasks:
-            print(str(task))
-            time.sleep(5)
+    #delete every unactual task
+    delsub = []
+    for sub in hu:
+        for task in hu[sub]: 
             deadline = task['dead']
-            print('deadline_datum: ' + str(deadline))
             if deadline == None:
-                del fach[fach.index(task)]
-            try: 
-                if deadline.month == now.month and int(deadline.day)-int(now.day) == 1:
-                    tasks_actual.append(task)
-            except: pass
-        hu_actual[fach] = tasks_actual
+                if len(hu[sub]) == 1:
+                    delsub.append(sub)
+                else:
+                    ind = hu[sub].index(task)
+                    del hu[sub][ind]
+    for x in delsub:
+        del hu[x]
     write_json(hu, json_hws)
-    
-    msg = 'HÜs bis morgen:\n'
-    for fach in hu_actual:
-        msg += '-' + fach + '-\n'
-        for x in hu_actual[fach]:
-            datum = str(x['dead'].day) + '.' + str(x['dead'].month)
-            msg += 'bis ' + datum + ' ' + x['task'] + '\n'
-    bot.send_message(chid, msg)
-
+    print('Deleted unactual tasks sucessfully...')
+    if reminder == True:
+        #find all actual tasks
+        actual_hu = {}
+        hu = read_json(json_hws)
+        for sub in hu:
+            for task in hu[sub]:
+                 deadline = task['dead']
+                 delta = deadline - now
+                 if delta.days == 1:
+                     if not 'sub_tasks' in locals(): sub_tasks = []
+                     sub_tasks.append(task)
+            if 'sub_tasks' in locals():
+                actual_hu[sub] = sub_tasks
+                del sub_tasks
+        print('Filtered actual tasks sucessfully...')
+        #generate message
+        if not actual_hu:
+            msg = 'Juhu, nichts zu tun bis morgen'
+            bot.send_message(chid, msg)
+            bot.send_sticker(chid, 'CAACAgIAAxkBAANxXmu2tkoO1Kr6nkNRGO5h7B2MIiIAAqAAA_cCyA_DRx0BoJvAGhgE')
+        else:
+            msg = 'ZU TUN BIS MORGEN:\n'
+            for sub in actual_hu:
+                msg += '[' + sub + ']\n'
+                for task in actual_hu[sub]:
+                    msg += '- ' + task['task'] + '\n'
+            bot.send_message(chid, msg)
+        print('Sent reminder sucessfully...')
+                 
 def add_sub(message):
     if message.text in subs:
         fach = message.text
@@ -199,6 +219,7 @@ def add_date(message, fach):
 def add_hw(message, fach, datum):
     add_task(fach, datum, message.text)
     bot.send_message(chid, 'Erfolgreich hinzugefügt!')
+
     
 @bot.message_handler(commands = ['add'])
 def dazu(message):
@@ -291,7 +312,7 @@ def dele(message):
 
 @bot.message_handler(commands = ['info'])
 def info(message):
-    bot.send_message(chid, 'Hallo! Ich bin 7Assistant, ich helfe Klassengruppen mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle bescheid geben!')
+    bot.send_message(chid, 'Hallo! \U+1F9BE Ich bin 7Assistant, ich helfe Klassengruppen mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle bescheid geben!')
 
 @bot.message_handler(commands = ['print'])
 def pr(message):
@@ -308,12 +329,13 @@ def idf(message):
 		# Do something with the message
 		#bot.reply_to(message, 'Hi')
 
-# class ScheduleThread(threading.Thread):
-#     def run(self):
-#         schedule.every(10).seconds.do(show_daily)
-#         while True:
-#             schedule.run_pending()
-#             time.sleep(1)
+class ScheduleThread(threading.Thread):
+     def run(self):
+         schedule.every().day.at('14:01').do(show_daily, reminder=True)
+         schedule.every().day.at('00:01').do(show_daily)         
+         while True:
+             schedule.run_pending()
+             time.sleep(1)
 
 class BotThread(threading.Thread):
     def run(self):
@@ -324,9 +346,9 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
 
-#show_daily()
+
 #bot.set_update_listener(handle_messages)
 thread1 = BotThread()
-#thread2 = ScheduleThread()
+thread2 = ScheduleThread()
 thread1.start()
-#thread2.start()
+thread2.start()
