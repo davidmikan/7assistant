@@ -1,24 +1,30 @@
 {
+     "deutsch": [
+          {
+               "dead": "17.3.",
+               "task": " Erstes Kapitel von Nora lesen."
+          }
+     ],
      "mathe": [
           {
                "dead": "16.3.",
-               "task": " same"
+               "task": " Aufgaben zu Sinusfunktionen"
+          },
+          {
+               "dead": "3.4.",
+               "task": " Buch Aufgaben 11.23-11.30"
+          }
+     ],
+     "chemie": [
+          {
+               "dead": "20.3.",
+               "task": "Aufgaben in Microsoft Teams "
           }
      ],
      "be": [
           {
-               "dead": "14.3.",
-               "task": " same"
-          },
-          {
-               "dead": "1.5.",
-               "task": " 123"
-          }
-     ],
-     "englisch": [
-          {
-               "dead": "18.3.",
-               "task": " vokabellernen"
+               "dead": "20.3.",
+               "task": "Portr\u00e4t von van Gogh"
           }
      ]
 }

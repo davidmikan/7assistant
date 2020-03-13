@@ -174,12 +174,31 @@ def add_sub(message):
         fach = message.text
         bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
         bot.register_next_step_handler(message, add_date, fach)
-        return
+    else:
+        try:
+            similar = difflib.get_close_matches(fach, subs, n=1)
+            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
+        except:
+            bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928')
+        # bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?')
+        # bot.register_next_step_handler(message, add_sub)
 
 def add_date(message, fach):
-    datum = extract_date(message.text, False)
+    datum, s = extract_date(message.text, False)
+    if datum == None: 
+        datum, s = extract_day(message.text)
+        if not datum == None: datum = to_date(datum)
     if not datum == None:
-        bot.send_message(chid, 'Fach: ' + fach + ', Datum: ' + str(datum))
+        bot.send_message(chid, 'Was ist zu erledigen?')
+        bot.register_next_step_handler(message, add_hw, fach, datum)
+    else:
+        bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
+        # bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
+        # bot.register_next_step_handler(message, add_date, fach)
+
+def add_hw(message, fach, datum):
+    add_task(fach, datum, message.text)
+    bot.send_message(chid, 'Erfolgreich hinzugefügt!')
     
 @bot.message_handler(commands = ['add'])
 def dazu(message):
