@@ -13,6 +13,7 @@ weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 json_hws = 'homeworks.json'
+json_sav = 'savedhws.json'
 chid = '-1001256312641' #für siebenaalpha gruppe
 
 def to_day(datum, forjson):
@@ -223,6 +224,10 @@ def add_hw(message, fach, datum):
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
+    #make saving
+    saving = read_json(json_hws)
+    write_json(saving, json_sav)
+    del saving
     # variables
     mest = message.text.split(' ', 2)
     if len(mest) == 1:
@@ -306,6 +311,7 @@ def zeige(message):
 def dele(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     msg = message.text.split(' ')
+    hu = read_json(json_hws)
     del msg[0]
     if not msg:
         clear = {}
@@ -313,7 +319,6 @@ def dele(message):
         print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
     else:
         sub = msg[0].lower()
-        hu = read_json(json_hws)
         if sub in subs:
             del hu[sub]
             write_json(hu, json_hws)
@@ -329,6 +334,15 @@ def dele(message):
                 bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht :(')
                 print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
                 return
+        
+@bot.message_handler(commands = ['revert'])
+def rev(message):
+    hu = read_json(json_hws)
+    hu_sav = read_json(json_sav)
+    write_json(hu_sav, json_hws)
+    write_json(hu, json_sav)
+     
+  
 
 @bot.message_handler(commands = ['info'])
 def info(message):
