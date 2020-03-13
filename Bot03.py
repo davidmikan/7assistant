@@ -169,12 +169,27 @@ def show_daily():
             msg += 'bis ' + datum + ' ' + x['task'] + '\n'
     bot.send_message(chid, msg)
 
-		
+def add_sub(message):
+    if message.text in subs:
+        fach = message.text
+        bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
+        bot.register_next_step_handler(message, add_date, fach)
+        return
+
+def add_date(message, fach):
+    datum = extract_date(message.text, False)
+    if not datum == None:
+        bot.send_message(chid, 'Fach: ' + fach + ', Datum: ' + str(datum))
+    
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     # variables
     mest = message.text.split(' ', 2)
+    if len(mest) == 1:
+        bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?')
+        bot.register_next_step_handler(message, add_sub)
+        return
     del mest[0]
     if len(mest) < 2: 
         bot.reply_to(message, '???')
