@@ -328,10 +328,15 @@ def dele(message):
     else:
         sub = msg[0].lower()
         if sub in subs:
-            del hu[sub]
-            write_json(hu, json_hws)
-            bot.reply_to(message, 'Gelöscht!')
-            print('Sucessfully deleted tasks from' + sub + '-'*20)
+            if sub in hu:
+                del hu[sub]
+                write_json(hu, json_hws)
+                bot.reply_to(message, 'Gelöscht!')
+                print('Sucessfully deleted tasks from' + sub + '-'*20)
+            else:
+                bot.reply_to(message, 'Keine Aufgaben für dieses Fach vorhanden!')
+                print('Deleting tasks failed as subject not existing...' + sub + '-'*20)
+                
         else:
             try: 
                 simsub = difflib.get_close_matches(sub, subs, n=1)
@@ -386,7 +391,7 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
 
-
+bot.send_message(chid, 'Bot successfully started! ^^')
 #bot.set_update_listener(handle_messages)
 thread1 = BotThread()
 thread2 = ScheduleThread()
