@@ -1,14 +1,36 @@
 {
-     "deutsch": [
+     "chemie": [
           {
-               "dead": "14.3.",
-               "task": " Erstes Kapitel von Nora lesen."
+               "dead": "20.3.",
+               "task": "Aufgaben in Microsoft Teams "
           }
      ],
-     "mathe": [
+     "be": [
+          {
+               "dead": "20.3.",
+               "task": "Portr\u00e4t von van Gogh"
+          },
           {
                "dead": "16.3.",
-               "task": " sinus"
+               "task": " Referat \u00fcber Pinselarten"
+          }
+     ],
+     "Deutsch": [
+          {
+               "dead": "20.3.",
+               "task": "Nora Kapitel 1 lesen"
+          }
+     ],
+     "Englisch": [
+          {
+               "dead": "1.4.",
+               "task": "Vokabeln lernen"
+          }
+     ],
+     "reminder": [
+          {
+               "dead": "21.3.",
+               "task": " trailer machen"
           }
      ]
 }

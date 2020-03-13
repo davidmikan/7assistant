@@ -15,6 +15,7 @@ now = datetime.now()
 json_hws = 'homeworks.json'
 json_sav = 'savedhws.json'
 chid = '-1001256312641' #für siebenaalpha gruppe
+commandids = []
 
 bot.send_message(chid, 'Bot successfully started! ^^')
 
@@ -191,42 +192,46 @@ def show_daily(reminder=False):
             bot.send_message(chid, msg)
         print('Sent reminder sucessfully...')
                  
-def add_sub(message):
-    markup = telebot.types.ReplyKeyboardMarkup(row_width=2)
-    itembtn1 = telebot.types.KeyboardButton('a')
-    itembtn2 = telebot.types.KeyboardButton('v')
-    itembtn3 = telebot.types.KeyboardButton('d')
-    markup.add(itembtn1, itembtn2, itembtn3)
-    bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?', reply_markup=markup)
-    if message.text in subs:
+def add_sub(message, botmsg):
+    bot.delete_message(chid, botmsg)
+    markup = telebot.types.ReplyKeyboardRemove()
+    if message.text.lower() in subs:
         fach = message.text
-        bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
-        bot.register_next_step_handler(message, add_date, fach)
+        botmsg = bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?', reply_markup=markup)
+        bot.register_next_step_handler(message, add_date, fach, botmsg.message_id)
+        msgid = message.message_id
+        bot.delete_message(chid, msgid)
     else:
         try:
             similar = difflib.get_close_matches(fach, subs, n=1)
-            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
+            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?', reply_markup=markup)
         except:
-            bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928')
+            bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928', reply_markup=markup)
         # bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?')
         # bot.register_next_step_handler(message, add_sub)
 
-def add_date(message, fach):
+def add_date(message, fach, botmsg):
+    bot.delete_message(chid, botmsg)
     datum, s = extract_date(message.text, False)
     if datum == None: 
         datum, s = extract_day(message.text)
         if not datum == None: datum = to_date(datum)
     if not datum == None:
-        bot.send_message(chid, 'Was ist zu erledigen?')
-        bot.register_next_step_handler(message, add_hw, fach, datum)
+        botmsg = bot.send_message(chid, 'Was ist zu erledigen?')
+        bot.register_next_step_handler(message, add_hw, fach, datum, botmsg.message_id)
+        msgid = message.message_id
+        bot.delete_message(chid, msgid)
     else:
         bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
         # bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
         # bot.register_next_step_handler(message, add_date, fach)
 
-def add_hw(message, fach, datum):
+def add_hw(message, fach, datum, botmsg):
+    bot.delete_message(chid, botmsg)
     add_task(fach, datum, message.text)
-    bot.send_message(chid, 'Erfolgreich hinzugefügt!')
+    msgid = message.message_id
+    bot.delete_message(chid, msgid)
+    bot.send_message(chid, 'HÜ "' + message.text + '" in ' + fach + ' hinzugefügt!')
 
     
 @bot.message_handler(commands = ['add'])
@@ -239,8 +244,14 @@ def dazu(message):
     # variables
     mest = message.text.split(' ', 2)
     if len(mest) == 1:
-        bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?')
-        bot.register_next_step_handler(message, add_sub)
+        markup = telebot.types.ReplyKeyboardMarkup()
+        msgid = message.message_id
+        bot.delete_message(chid, msgid)
+        for sub in subs:
+            markup.add(telebot.types.KeyboardButton(sub.capitalize()))
+        botmsg = bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?', reply_markup=markup)
+        bot.register_next_step_handler(message, add_sub, botmsg.message_id)
+        #bot.delete_message(chid, botmsg.message_id)
         return
     del mest[0]
     if len(mest) < 2: 
@@ -273,7 +284,9 @@ def dazu(message):
         print('COULD NOT ADD TASK, WRONG DATE\n' + '-'*20)
     else:
         add_task(fach, datum, text)
-        bot.reply_to(message, 'Hausaufgabe für ' + fach + ' hinzugefügt!')
+        bot.send_message(chid, 'HÜ "' + text + '" in ' + fach + ' hinzugefügt!')
+        msgid = message.message_id
+        bot.delete_message(chid, msgid)
         print('SUCCESFULLY ADDED TASK\n' + '-'*20)
 
 @bot.message_handler(commands = ['show'])
@@ -391,7 +404,6 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
 
-bot.send_message(chid, 'Bot successfully started! ^^')
 #bot.set_update_listener(handle_messages)
 thread1 = BotThread()
 thread2 = ScheduleThread()
