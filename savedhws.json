@@ -1,26 +1,8 @@
 {
-     "chemie": [
-          {
-               "dead": "20.3.",
-               "task": "Aufgaben in Microsoft Teams "
-          }
-     ],
-     "reminder": [
-          {
-               "dead": "21.3.",
-               "task": " trailer machen"
-          }
-     ],
      "mathe": [
           {
-               "dead": "1.4.",
-               "task": " test"
-          }
-     ],
-     "geschichte": [
-          {
-               "dead": "19.3.",
-               "task": "lustig"
+               "dead": "15.3.",
+               "task": " 500 Aufgaben auf Mahara stellen \ud83d\ude44"
           }
      ]
 }
