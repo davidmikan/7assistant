@@ -8,7 +8,7 @@ import time
 import threading
 
 bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
-subs = ['mathe', 'englisch', 'franz', 'psycho', 'deutsch', 'chemie', 'physik', 'geschichte', 'latein', 'geo', 'musik', 'be', 'reminder']
+subs = ['mathe', 'deutsch', 'latein', 'englisch', 'franz-f', 'franz-a', 'psycho', 'chemie', 'physik', 'geschichte', 'geo', 'musik', 'be', 'reminder']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
@@ -163,7 +163,7 @@ def show_daily(reminder=False):
         del hu[x]
     write_json(hu, json_hws)
     print('Deleted unactual tasks sucessfully...')
-    if reminder == True:
+    if reminder:
         #find all actual tasks
         actual_hu = {}
         hu = read_json(json_hws)
@@ -184,11 +184,11 @@ def show_daily(reminder=False):
             bot.send_message(chid, msg)
             bot.send_sticker(chid, 'CAACAgIAAxkBAANxXmu2tkoO1Kr6nkNRGO5h7B2MIiIAAqAAA_cCyA_DRx0BoJvAGhgE')
         else:
-            msg = 'ZU TUN BIS MORGEN:\n'
+            msg = '- ZU TUN BIS MORGEN -'
             for sub in actual_hu:
-                msg += '[' + sub + ']\n'
+                msg += '\n' + sub + ':'
                 for task in actual_hu[sub]:
-                    msg += '- ' + task['task'] + '\n'
+                    msg += '- ' + task['task']
             bot.send_message(chid, msg)
         print('Sent reminder sucessfully...')
                  
@@ -196,9 +196,8 @@ def add_sub(message, botmsg):
     bot.delete_message(chid, botmsg)
     markup = telebot.types.ReplyKeyboardRemove()
     if message.text.lower() in subs:
-        fach = message.text
         botmsg = bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?', reply_markup=markup)
-        bot.register_next_step_handler(message, add_date, fach, botmsg.message_id)
+        bot.register_next_step_handler(message, add_date, message.text.lower(), botmsg.message_id)
         msgid = message.message_id
         bot.delete_message(chid, msgid)
     else:
@@ -318,9 +317,9 @@ def zeige(message):
         bot.send_message(chid, 'Keine HÜs!')
         print('SUCCESFUL, NO TASKS\n' + '-'*20)
     else:
-        msg = 'HÜs: \n'
+        msg = 'HÜs:'
         for sub in show_subs:
-            msg += '- ' + str(sub).capitalize() + ' - \n'
+            msg += '\n' + str(sub).capitalize() + ': \n'
             for hw in show_subs[sub]:
                 print(hw)
                 datum = to_day(hw['dead'], False)
@@ -331,35 +330,40 @@ def zeige(message):
 @bot.message_handler(commands = ['del'])
 def dele(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
-    msg = message.text.split(' ')
+    text = message.text.split(' ')
     hu = read_json(json_hws)
-    del msg[0]
-    if not msg:
+    del text[0]
+    if not text:
         clear = {}
         write_json(clear, json_hws)
+        bot.reply_to(message, 'Alle HÜs gelöscht!')
         print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
     else:
-        sub = msg[0].lower()
-        if sub in subs:
+        msg = 'HÜs in '
+        for sub in text:
+            sub = sub.lower()
             if sub in hu:
                 del hu[sub]
                 write_json(hu, json_hws)
-                bot.reply_to(message, 'Gelöscht!')
-                print('Sucessfully deleted tasks from' + sub + '-'*20)
+                #bot.reply_to(message, 'HÜs in ' + sub + ' gelöscht!')
+                msg += ',' + sub + ' '
+                print('Sucessfully deleted tasks from' + sub + '\n' + '-'*20)
             else:
-                bot.reply_to(message, 'Keine Aufgaben für dieses Fach vorhanden!')
-                print('Deleting tasks failed as subject not existing...' + sub + '-'*20)
-                
-        else:
-            try: 
-                simsub = difflib.get_close_matches(sub, subs, n=1)
-                bot.reply_to(message, str(sub) + '? Meintest du ' + str(simsub[0]) + '?')
-                print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
-                return
-            except:
-                bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht :(')
-                print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
-                return
+                if sub in subs:
+                    #bot.reply_to(message, 'HÜs in ' + sub + ' gelöscht!')
+                    msg += ', ' + sub + ' '
+                    print(sub + ' already empty!')
+                else:
+                    try: 
+                        simsub = difflib.get_close_matches(sub, subs, n=1)
+                        bot.reply_to(message, str(sub) + '? Meintest du ' + str(simsub[0]) + '?')
+                        print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
+                    except:
+                        bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht :(')
+                        print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
+        msg += 'gelöscht!'
+        if not msg == 'HÜs in gelöscht!': 
+            bot.send_message(chid, msg)
         
 @bot.message_handler(commands = ['revert'])
 def rev(message):
@@ -389,7 +393,7 @@ def idf(message):
 
 class ScheduleThread(threading.Thread):
      def run(self):
-         schedule.every().day.at('14:01').do(show_daily, reminder=True)
+         schedule.every().day.at('14:00').do(show_daily, reminder=True)
          schedule.every().day.at('00:01').do(show_daily)         
          while True:
              schedule.run_pending()

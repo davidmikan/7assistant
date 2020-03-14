@@ -1,0 +1,5 @@
+add - HÜ hinzufügen
+show - HÜs anzeigen
+del - HÜs entfernen
+revert - letzten Befehl rückgängig machen
+info - Infos über mich :)
