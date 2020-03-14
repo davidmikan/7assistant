@@ -6,6 +6,7 @@ import json
 import schedule
 import time
 import threading
+import copy
 
 bot = telebot.TeleBot('1070998367:AAExa_Zd5Hjtt-JOoHMGwgxeu9-FA_9x0iw')
 subs = ['mathe', 'deutsch', 'latein', 'englisch', 'franz-f', 'franz-a', 'psycho', 'chemie', 'physik', 'geschichte', 'geo', 'musik', 'be', 'reminder']
@@ -13,15 +14,9 @@ weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'
 hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 json_hws = 'homeworks.json'
-json_sav = 'savedhws.json'
+hu_sav = {}
 chid = '-1001256312641' #für siebenaalpha gruppe
 commandids = []
-
-def trailerstart():
-    trailermsg = bot.send_message(chid, 'Hey, ich bin *7Assistant*, der coolste Klassengruppenmanager auf Telegram \U0001F60E', parse_mode='Markdown')
-    trailermsg = trailermsg.message_id
-    input('...')
-    bot.delete_message(chid, trailermsg)
 
 def to_day(datum, forjson):
     if not forjson: print('converting ' + str(datum) + '...')
@@ -239,9 +234,8 @@ def add_hw(message, fach, datum, botmsg):
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     #make saving
-    saving = read_json(json_hws)
-    write_json(saving, json_sav)
-    del saving
+    global hu_sav
+    hu_sav = read_json(json_hws)
     # variables
     mest = message.text.split(' ', 2)
     if len(mest) == 1:
@@ -333,6 +327,8 @@ def dele(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     text = message.text.split(' ')
     hu = read_json(json_hws)
+    global hu_sav
+    hu_sav = read_json(json_hws)
     anydels = False
     del text[0]
     if not text:
@@ -366,10 +362,10 @@ def dele(message):
         
 @bot.message_handler(commands = ['revert'])
 def rev(message):
-    hu = read_json(json_hws)
-    hu_sav = read_json(json_sav)
-    write_json(hu_sav, json_hws)
-    write_json(hu, json_sav)
+    global hu_sav
+    hu = copy.deepcopy(hu_sav)
+    hu_sav = read_json(json_hws)
+    write_json(hu, json_hws)
     bot.send_message(chid, '\U000021A9 Letzten Schritt rückgängig gemacht!')
 
 @bot.message_handler(commands = ['info'])
@@ -413,5 +409,3 @@ thread1 = BotThread()
 thread2 = ScheduleThread()
 thread1.start()
 thread2.start()
-
-trailerstart()
