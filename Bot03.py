@@ -17,17 +17,21 @@ json_sav = 'savedhws.json'
 chid = '-1001256312641' #für siebenaalpha gruppe
 commandids = []
 
-bot.send_message(chid, 'Bot successfully started! ^^')
+def trailerstart():
+    trailermsg = bot.send_message(chid, 'Hey, ich bin *7Assistant*, der coolste Klassengruppenmanager auf Telegram \U0001F60E', parse_mode='Markdown')
+    trailermsg = trailermsg.message_id
+    input('...')
+    bot.delete_message(chid, trailermsg)
 
 def to_day(datum, forjson):
-    if forjson == False: print('converting ' + str(datum) + '...')
+    if not forjson: print('converting ' + str(datum) + '...')
     test = datum - now.date()
     if test.days <= 7 and not forjson:
         wday = datum.weekday()
         datum = weekdays[wday]
     else:
         datum = str(datum.day) + '.' + str(datum.month) + '.'
-    if forjson == False: print('converted to ' + str(datum) + '!')
+    if not forjson: print('converted to ' + str(datum) + '!')
     return datum
 
 def to_date(weekday):
@@ -41,7 +45,7 @@ def to_date(weekday):
     return d.date()
 
 def extract_date(s, forjson):
-    if forjson == False: print('extracting date from ' + str(s) + '...')
+    if not forjson: print('extracting date from ' + str(s) + '...')
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
     if x:
@@ -62,15 +66,15 @@ def extract_date(s, forjson):
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
             dif = dat_formatted - now
             if dif.days < 0:
-                if forjson == False: print('extraction failed, date ' + str(dat_formatted) + ' is today/in the past')
+                if not forjson: print('extraction failed, date ' + str(dat_formatted) + ' is today/in the past')
                 return None, s
         except Exception as e:
-            if forjson == False: print('extraction failed, error: ' + str(e))
+            if not forjson: print('extraction failed, error: ' + str(e))
             return None, s
     else:
         return None, s
     dat_formatted = dat_formatted.date()
-    if forjson == False: print('extracted ' + str(dat_formatted) + '!')
+    if not forjson: print('extracted ' + str(dat_formatted) + '!')
     return dat_formatted, s
 
 def extract_day(s):
@@ -180,15 +184,14 @@ def show_daily(reminder=False):
         print('Filtered actual tasks sucessfully...')
         #generate message
         if not actual_hu:
-            msg = 'Juhu, nichts zu tun bis morgen'
+            msg = 'Es gibt keine HÜs zu erledigen bis morgen! \U0001F973'
             bot.send_message(chid, msg)
-            bot.send_sticker(chid, 'CAACAgIAAxkBAANxXmu2tkoO1Kr6nkNRGO5h7B2MIiIAAqAAA_cCyA_DRx0BoJvAGhgE')
         else:
-            msg = '- ZU TUN BIS MORGEN -'
+            msg = '\U0001F4CB HÜs bis morgen'
             for sub in actual_hu:
-                msg += '\n' + sub + ':'
+                msg += '\n' + sub + ':\n'
                 for task in actual_hu[sub]:
-                    msg += '- ' + task['task']
+                    msg += '\u00BB ' + task['task'] + '\n'
             bot.send_message(chid, msg)
         print('Sent reminder sucessfully...')
                  
@@ -202,10 +205,10 @@ def add_sub(message, botmsg):
         bot.delete_message(chid, msgid)
     else:
         try:
-            similar = difflib.get_close_matches(fach, subs, n=1)
-            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?', reply_markup=markup)
+            similar = difflib.get_close_matches(message.text.lower(), subs, n=1)
+            bot.reply_to(message, str(fach) + '? Meintest du ' + similar[0] + '? \U0001F928', reply_markup=markup)
         except:
-            bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928', reply_markup=markup)
+            bot.reply_to(message, 'Ich kenne das Fach' + message.text.lower() + 'nicht \U0001F928', reply_markup=markup)
         # bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?')
         # bot.register_next_step_handler(message, add_sub)
 
@@ -221,7 +224,7 @@ def add_date(message, fach, botmsg):
         msgid = message.message_id
         bot.delete_message(chid, msgid)
     else:
-        bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
+        bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format `TT.MM.`, das nicht in der Vergangenheit liegt. /help', parse_mode='Markdown')
         # bot.send_message(chid, 'Bis wann ist die HÜ zu erledigen?')
         # bot.register_next_step_handler(message, add_date, fach)
 
@@ -230,9 +233,8 @@ def add_hw(message, fach, datum, botmsg):
     add_task(fach, datum, message.text)
     msgid = message.message_id
     bot.delete_message(chid, msgid)
-    bot.send_message(chid, 'HÜ "' + message.text + '" in ' + fach + ' hinzugefügt!')
+    bot.send_message(chid, 'HÜ "' + message.text + '" für ' + fach.capitalize() + ' hinzugefügt!')
 
-    
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
@@ -254,7 +256,7 @@ def dazu(message):
         return
     del mest[0]
     if len(mest) < 2: 
-        bot.reply_to(message, '???')
+        bot.reply_to(message, 'Falsches Eingabeformat, bitte schreibe `/add` <fach> <deadline und aufgabe>, oder einfach `/add`! /help', parse_mode='Markdown')
         return
     fach = mest[0].lower()
     text = mest[1]
@@ -273,13 +275,13 @@ def dazu(message):
     if not fach in subs: # checking subject
         try:
             similar = difflib.get_close_matches(fach, subs, n=1)
-            bot.reply_to(message, 'bruh, meintest du ' + similar[0] + '?')
+            bot.reply_to(message, fach + '? Meintest du ' + similar[0] + '? \U0001F928')
         except:
-            bot.reply_to(message, 'Ich kenne dieses Fach nicht \U0001F928')
+            bot.reply_to(message, 'Ich kenne das Fach ' + fach + ' nicht \U0001F928')
         print('COULD NOT ADD TASK, WRONG SUBJECT\n' + '-'*20)
         return
     elif not datum: # checking date
-        bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format TT.MM., das nicht in der Vergangenheit liegt.')
+        bot.reply_to(message, 'Falsches Eingabeformat für das Datum, bitte benutze einen Wochentag oder ein Datum im Format `TT.MM.`, das nicht in der Vergangenheit liegt.', parse_mode='Markdown')
         print('COULD NOT ADD TASK, WRONG DATE\n' + '-'*20)
     else:
         add_task(fach, datum, text)
@@ -303,21 +305,20 @@ def zeige(message):
         else:
             try: 
                 simsub = difflib.get_close_matches(hw, subs, n=1)
-                bot.reply_to(message, str(hw) + '? Meintest du ' + str(simsub[0]) + '?')
+                bot.reply_to(message, str(hw) + '? Meintest du ' + str(simsub[0]) + '? \U0001F928')
                 print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(hw) + '\n' + '-'*20)
                 return
             except:
-                bot.reply_to(message, 'Ich kenne das Fach ' + str(hw) + ' nicht :(')
+                bot.reply_to(message, 'Ich kenne das Fach ' + str(hw) + ' nicht \U0001F928')
                 print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(hw) + '\n' + '-'*20)
                 return
     show_subs = show_tasks(show_subs) # returns dictionary with lists of dictionaries!
     print(show_subs)
-    if len(show_subs) == 0: 
-        bot.send_sticker(chid, sticker)
-        bot.send_message(chid, 'Keine HÜs!')
+    if len(show_subs) == 0:
+        bot.send_message(chid, '\U0001F389 Keine HÜs!')
         print('SUCCESFUL, NO TASKS\n' + '-'*20)
     else:
-        msg = 'HÜs:'
+        msg = '\U0001F4DA HÜs'
         for sub in show_subs:
             msg += '\n' + str(sub).capitalize() + ': \n'
             for hw in show_subs[sub]:
@@ -332,38 +333,36 @@ def dele(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     text = message.text.split(' ')
     hu = read_json(json_hws)
+    anydels = False
     del text[0]
     if not text:
         clear = {}
         write_json(clear, json_hws)
-        bot.reply_to(message, 'Alle HÜs gelöscht!')
+        bot.reply_to(message, '\U0001F5D1 Alle HÜs gelöscht!')
         print('SUCCESFULLY CLEARED TASKS\n' + '-'*20)
     else:
-        msg = 'HÜs in '
         for sub in text:
             sub = sub.lower()
             if sub in hu:
+                anydels = True
                 del hu[sub]
                 write_json(hu, json_hws)
                 #bot.reply_to(message, 'HÜs in ' + sub + ' gelöscht!')
-                msg += ',' + sub + ' '
                 print('Sucessfully deleted tasks from' + sub + '\n' + '-'*20)
             else:
                 if sub in subs:
+                    anydels = True
                     #bot.reply_to(message, 'HÜs in ' + sub + ' gelöscht!')
-                    msg += ', ' + sub + ' '
                     print(sub + ' already empty!')
                 else:
                     try: 
                         simsub = difflib.get_close_matches(sub, subs, n=1)
-                        bot.reply_to(message, str(sub) + '? Meintest du ' + str(simsub[0]) + '?')
+                        bot.reply_to(message, str(sub) + '? Meintest du ' + str(simsub[0]) + '? \U0001F928')
                         print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
                     except:
-                        bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht :(')
+                        bot.reply_to(message, 'Ich kenne das Fach ' + str(sub) + ' nicht \U0001F928')
                         print('COULD NOT DISPLAY TASK, UNKNOWN SUBJECT' + str(sub) + '\n' + '-'*20)
-        msg += 'gelöscht!'
-        if not msg == 'HÜs in gelöscht!': 
-            bot.send_message(chid, msg)
+        if anydels: bot.send_message(chid, '\U0001F5D1 HÜs gelöscht!')
         
 @bot.message_handler(commands = ['revert'])
 def rev(message):
@@ -371,10 +370,11 @@ def rev(message):
     hu_sav = read_json(json_sav)
     write_json(hu_sav, json_hws)
     write_json(hu, json_sav)
+    bot.send_message(chid, '\U000021A9 Letzten Schritt rückgängig gemacht!')
 
 @bot.message_handler(commands = ['info'])
 def info(message):
-    bot.send_message(chid,'Hallo! Ich bin 7Assistant, ich helfe Klassengruppen mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle bescheid geben!')
+    bot.send_message(chid,'Hallo! Ich bin 7Assistant, ich helfe unserer Klassengruppe mit ihrem HÜ-Management! Um zu lernen, wie ich funktioniere, schreib /help, dann wird der Weini dir über alle Befehle Bescheid geben!')
 
 @bot.message_handler(commands = ['print'])
 def pr(message):
@@ -394,7 +394,7 @@ def idf(message):
 class ScheduleThread(threading.Thread):
      def run(self):
          schedule.every().day.at('14:00').do(show_daily, reminder=True)
-         schedule.every().day.at('00:01').do(show_daily)         
+         schedule.every().day.at('00:01').do(show_daily)
          while True:
              schedule.run_pending()
              time.sleep(1)
@@ -413,3 +413,5 @@ thread1 = BotThread()
 thread2 = ScheduleThread()
 thread1.start()
 thread2.start()
+
+trailerstart()

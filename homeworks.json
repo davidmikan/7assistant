@@ -5,22 +5,22 @@
                "task": "Aufgaben in Microsoft Teams "
           }
      ],
-     "Deutsch": [
-          {
-               "dead": "20.3.",
-               "task": "Nora Kapitel 1 lesen"
-          }
-     ],
-     "Englisch": [
-          {
-               "dead": "1.4.",
-               "task": "Vokabeln lernen"
-          }
-     ],
      "reminder": [
           {
                "dead": "21.3.",
                "task": " trailer machen"
+          }
+     ],
+     "mathe": [
+          {
+               "dead": "1.4.",
+               "task": " test"
+          }
+     ],
+     "geschichte": [
+          {
+               "dead": "19.3.",
+               "task": "lustig"
           }
      ]
 }
