@@ -7,7 +7,7 @@ import schedule
 import time
 import threading
 
-bot = telebot.TeleBot('1111789249:AAEGz9Tn20CzC7b6ZljLMjtRSakvN8Z7_H8')
+bot = telebot.TeleBot('1070998367:AAExa_Zd5Hjtt-JOoHMGwgxeu9-FA_9x0iw')
 subs = ['mathe', 'deutsch', 'latein', 'englisch', 'franz-f', 'franz-a', 'psycho', 'chemie', 'physik', 'geschichte', 'geo', 'musik', 'be', 'reminder']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 hu = {} #dictionary von aufgaben, fächer als keys
