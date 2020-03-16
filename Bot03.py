@@ -7,6 +7,7 @@ import schedule
 import time
 import threading
 import copy
+import robotweini as rw
 
 bot = telebot.TeleBot('1070998367:AAExa_Zd5Hjtt-JOoHMGwgxeu9-FA_9x0iw')
 subs = ['mathe', 'deutsch', 'latein', 'englisch', 'franz-f', 'franz-a', 'psycho', 'chemie', 'physik', 'geschichte', 'geo', 'musik', 'be', 'reminder']
@@ -230,6 +231,15 @@ def add_hw(message, fach, datum, botmsg):
     bot.delete_message(chid, msgid)
     bot.send_message(chid, 'HÜ "' + message.text + '" für ' + fach.capitalize() + ' hinzugefügt!')
 
+def extract_fct(string):
+    p = re.compile(r'\d\*x\+\d')
+    m = p.search(string)
+    if m:
+        fct = m.group()
+        return fct
+    else:
+        return None
+
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
@@ -382,10 +392,14 @@ def idf(message):
     chid = message.chat.id
     print(chid)
 
-#def handle_messages(messages):
-	#for message in messages:
-		# Do something with the message
-		#bot.reply_to(message, 'Hi')
+def handle_messages(messages):
+    for message in messages:
+        text = message.text.split()
+        for part in text:
+            fct = extract_fct(part)
+            if fct:
+                rw.plot_fct(fct)
+		
 
 class ScheduleThread(threading.Thread):
      def run(self):
@@ -404,7 +418,7 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
 
-#bot.set_update_listener(handle_messages)
+bot.set_update_listener(handle_messages)
 thread1 = BotThread()
 thread2 = ScheduleThread()
 thread1.start()

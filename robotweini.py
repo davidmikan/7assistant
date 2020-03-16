@@ -1,41 +1,33 @@
 import telebot
+import matplotlib.pyplot as plt
 import random
-import re
-import assistant_help
 
-bot = telebot.TeleBot('928189418:AAH6SZbYLU5p7J12VhhfimKGvQZO080n0ek')
+weini = telebot.TeleBot('928189418:AAH6SZbYLU5p7J12VhhfimKGvQZO080n0ek')
 
 triggered = ['robert', 'weini', 'weinhandl']
 ideen = []
 chid = '-1001256312641'
-bot.send_message(chid, 'Gibt\'s Probleme? Will man welche??')
+gg = ['I (x²+y²-1)³-x²y³=0 GeoGebra', 'gg = geogebra ≠ gossip girl ≠ good game']	
 
-# def error(chid, errortype):
-#     if errortype == 'subject':
-#         bot.send_message(chid, 'Offensichtlich hast du nichts verstanden. Für eine Liste aller Fächer schreibe /help subjects.')
-#     elif errortype == 'date':
-#         bot.send_message(chid, 'Nunja, ein Datum sollte man schon richtig benutzen können.')
+def plot_fct(term):
+    #term in form "k*x+t" wobei k eine zahl und t einzahl
+    k = int(term[0])
+    t = int(term[-1])
+    yvals = []
+    for x in range(11):
+        f = k*x+t
+        yvals.append(f)
+    print(yvals)
+    plt.plot(yvals, "--c",
+             yvals, "xb"
+             ) 
+    xmin, xmax, ymin, ymax = -1, 11, int(yvals[0])- 1, int(yvals[-1]) + 1
+    plt.axis([xmin, xmax, ymin, ymax])
+    plt.xlabel('x')
+    plt.ylabel('f (x)')
+    plt.savefig('plot.png')
+    with open('plot.png', 'rb') as image:
+         weini.send_photo(chid, image)
+         weini.send_message(chid, random.choice(gg))
 
-# @bot.message_handler(commands = ['help'])
-# def helpcommand(message):
-#     chid = message.chat.id
-#     msg = assistant_help.helpmsg(message.text)
-#     bot.send_message(chid, msg)
 
-# def handle_messages(messages):
-#     for message in messages:
-#         text = message.text
-#         msg = ''
-#         x = random.randint(1, 6)
-#         if any(ext in text.lower() for ext in triggered) and x == 1:
-#             msg = 'Gibt\'s Probleme?? \nWill man welche????'
-#         if msg: bot.reply_to(message, msg)
-        
-# bot.set_update_listener(handle_messages)
-
-# while True:
-#     try:
-#         bot.polling(interval=1)
-#     except Exception as e:
-#         print(str(e))
-#         continue
