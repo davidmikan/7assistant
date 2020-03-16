@@ -20,28 +20,28 @@ chid = '-1001256312641' #für siebenaalpha gruppe
 commandids = []
 
 def to_day(datum, forjson):
-    if not forjson: print('converting ' + str(datum) + '...')
+    if not forjson: print('(to_day) converting ' + str(datum) + '...')
     test = datum - now.date()
     if test.days <= 7 and not forjson:
         wday = datum.weekday()
         datum = weekdays[wday]
     else:
         datum = str(datum.day) + '.' + str(datum.month) + '.'
-    if not forjson: print('converted to ' + str(datum) + '!')
+    if not forjson: print('(to_day) converted to ' + str(datum) + '!')
     return datum
 
 def to_date(weekday):
-    print('converting ' + str(weekday) + '...')
+    print('(to_date) converting ' + str(weekday) + '...')
     d = weekdays.index(weekday) - now.weekday()
     if d < 1:
         d = 7 + d
     d = timedelta(days = d)
     d = now + d
-    print('converted to ' + str(d.date()) + '!')
+    print('(to_date) converted to ' + str(d.date()) + '!')
     return d.date()
 
 def extract_date(s, forjson):
-    if not forjson: print('extracting date from ' + str(s) + '...')
+    if not forjson: print('(extract_date) extracting from ' + str(s) + '...')
     p = re.compile(r'\d{1,2}\.\d{1,2}\.')
     x = p.search(s)
     if x:
@@ -62,19 +62,19 @@ def extract_date(s, forjson):
             dat_formatted = datetime.strptime(str(now.year) + dat, '%Y%d%m')
             dif = dat_formatted - now
             if dif.days < 0:
-                if not forjson: print('extraction failed, date ' + str(dat_formatted) + ' is today/in the past')
+                if not forjson: print('(extract_date) extraction failed, date ' + str(dat_formatted) + ' is today/in the past')
                 return None, s
         except Exception as e:
-            if not forjson: print('extraction failed, error: ' + str(e))
+            if not forjson: print('(extract_date) extraction failed, error: ' + str(e))
             return None, s
     else:
         return None, s
     dat_formatted = dat_formatted.date()
-    if not forjson: print('extracted ' + str(dat_formatted) + '!')
+    if not forjson: print('(extract_date) extracted ' + str(dat_formatted) + '!')
     return dat_formatted, s
 
 def extract_day(s):
-    print('extracting day from ' + str(s) + '...')
+    print('(extract_day) extracting day from ' + str(s) + '...')
     p = re.compile(r'montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag', re.I)
     tag = p.search(s)
     if tag:
@@ -84,13 +84,13 @@ def extract_day(s):
         tag = tag.lower()
         tag = tag.capitalize()
     else:
-        print('extraction failed, found no day')
+        print('(extract_day) extraction failed, found no day')
         return None, s
-    print('extracted ' + str(tag) + '!')
+    print('(extract_day) extracted ' + str(tag) + '!')
     return tag, s
 
 def add_task(fach, datum, text):
-    print('adding task: ' + str(fach) + ', date + text:' + str(datum) + ', ' + str(text) + '...')
+    print('(add_task) adding task: ' + str(fach) + ', date + text:' + str(datum) + ', ' + str(text) + '...')
     neu = {'dead': datum, 'task': text}
     hu = read_json(json_hws)
     if fach in hu:
@@ -99,7 +99,7 @@ def add_task(fach, datum, text):
         hu[fach] = []
         hu[fach].append(neu)
     write_json(hu, json_hws)
-    print('added!')
+    print('(add_task) task added!')
 
 def show_tasks(tasks):
     hu = read_json(json_hws)
@@ -112,11 +112,11 @@ def show_tasks(tasks):
             continue
     if len(tasks) == 0:
         show_subs = hu
-    print('showing subs: ' + str(show_subs))
+    print('(show_tasks) showing tasks for subs ' + str(show_subs) + '...')
     return show_subs
 	
 def read_json(targetfile):
-    print('fetching homeworks from json...')
+    print('(read_json) fetching homeworks from json...')
     try:
         with open(targetfile, 'r') as json_file:
             dictionary = json.load(json_file)
@@ -126,11 +126,11 @@ def read_json(targetfile):
         sub = dictionary[sub]
         for hw in sub:
             hw['dead'], s = extract_date(hw['dead'], True)
-    print('succesfullly fetched!')
+    print('(read_json) succesfullly fetched!')
     return dictionary
 
 def write_json(dictionary, targetfile):
-    print('writing to json, homeworks: ' + str(dictionary))
+    print('(write_json) writing to json, homeworks: ' + str(dictionary) + '...')
     for sub in dictionary:
         sub = dictionary[sub] # list with dictionaries
         for hw in sub:
@@ -140,13 +140,12 @@ def write_json(dictionary, targetfile):
             json.dump(dictionary, jsonfile, indent=5)
     except Exception as ex:
         print('xxxxxxx\nWriting JSON file failed:\n{}\nxxxxxxx\n'.format(ex))
-    print('writing succesful!')
+    print('(write_json) writing succesful!')
     return dictionary
 
 def show_daily(reminder=False):
-    print('Start excecution of show_daily() ...')
     now = datetime.now().date()
-    print('now:',now)
+    print('(show_daily) showing tasks, today is ' + str(now) + '...')
     hu = read_json(json_hws)
     #delete every unactual task
     delsub = []
@@ -233,6 +232,9 @@ def add_hw(message, fach, datum, botmsg):
 
 @bot.message_handler(commands = ['add'])
 def dazu(message):
+    if not message.chat.id == chid:
+        bot.reply_to(message, 'Dieser Befehl kann in diesem Chat nicht ausgeführt werden.')
+        return
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     #make saving
     global hu_sav
@@ -288,7 +290,7 @@ def dazu(message):
 @bot.message_handler(commands = ['show'])
 def zeige(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
-    chid = message.chat.id
+    #chid = message.chat.id
     msg = ''
     sticker = 'CAACAgQAAxkBAANmXmN_UmmKIbbRBlguyPCF9UnVXcYAAg0AA8l8pyHy3-tYPCcNPxgE'
     show_requests = message.text.split(' ')
@@ -325,6 +327,9 @@ def zeige(message):
 
 @bot.message_handler(commands = ['del'])
 def dele(message):
+    if not message.chat.id == chid:
+        bot.reply_to(message, 'Dieser Befehl kann in diesem Chat nicht ausgeführt werden.')
+        return
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
     text = message.text.split(' ')
     hu = read_json(json_hws)
@@ -363,6 +368,9 @@ def dele(message):
         
 @bot.message_handler(commands = ['revert'])
 def rev(message):
+    if not message.chat.id == chid:
+        bot.reply_to(message, 'Dieser Befehl kann in diesem Chat nicht ausgeführt werden.')
+        return
     global hu_sav
     hu = copy.deepcopy(hu_sav)
     hu_sav = read_json(json_hws)
@@ -380,8 +388,9 @@ def pr(message):
 
 @bot.message_handler(commands = ['id'])
 def idf(message):
-    chid = message.chat.id
-    print(chid)
+    thischatsid = message.chat.id
+    bot.reply_to(message, 'Die ID von diesem Chat ist ' + str(thischatsid))
+    print('- received chat id request, chat id is ' + thischatsid)
 
 def handle_messages(messages):
     for message in messages:
