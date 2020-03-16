@@ -231,15 +231,6 @@ def add_hw(message, fach, datum, botmsg):
     bot.delete_message(chid, msgid)
     bot.send_message(chid, 'HÜ "' + message.text + '" für ' + fach.capitalize() + ' hinzugefügt!')
 
-def extract_fct(string):
-    p = re.compile(r'\d\*x\+\d')
-    m = p.search(string)
-    if m:
-        fct = m.group()
-        return fct
-    else:
-        return None
-
 @bot.message_handler(commands = ['add'])
 def dazu(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
@@ -394,11 +385,15 @@ def idf(message):
 
 def handle_messages(messages):
     for message in messages:
-        text = message.text.split()
-        for part in text:
-            fct = extract_fct(part)
-            if fct:
-                rw.plot_fct(fct)
+        if message.text:
+            text = message.text.split()
+            for part in text:
+                fct = rw.extract_fct(part)
+                print(fct)
+                if fct:
+                    rw.plot_fct(fct)
+                else:
+                    return
 		
 
 class ScheduleThread(threading.Thread):
