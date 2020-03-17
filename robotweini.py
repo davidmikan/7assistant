@@ -9,6 +9,7 @@ weini = telebot.TeleBot('928189418:AAH6SZbYLU5p7J12VhhfimKGvQZO080n0ek')
 triggered = ['robert', 'weini', 'weinhandl']
 ideen = []
 chid = '-1001256312641'
+<<<<<<< Updated upstream
 
 triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater'], 3:['weini', 'weinhandl', 'robert'], 4:['schweigefuchs', 'fuchs', 'scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber']}
 answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'geozebra'], 2:['dön dön dön dün dü dün dön dü dü', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERDE DICH MIT VOLLER KRAFT AND DIE WAND FAHREN', 'Cave Canem']}
@@ -74,6 +75,9 @@ def fctval(string):
     else:
         return None
 
+=======
+	
+>>>>>>> Stashed changes
 def extract_fct(string):
     print('-'*20)
     print('Exctrating function from', string,'...')

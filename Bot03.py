@@ -203,7 +203,7 @@ def add_sub(message, botmsg):
             similar = difflib.get_close_matches(message.text.lower(), subs, n=1)
             bot.reply_to(message, str(fach) + '? Meintest du ' + similar[0] + '? \U0001F928', reply_markup=markup)
         except:
-            bot.reply_to(message, 'Ich kenne das Fach' + message.text.lower() + 'nicht \U0001F928', reply_markup=markup)
+            bot.reply_to(message, 'Ich kenne das Fach ' + message.text.lower() + ' nicht \U0001F928', reply_markup=markup)
         # bot.send_message(chid, 'Für welches Fach willst du eine HÜ hinzufügen?')
         # bot.register_next_step_handler(message, add_sub)
 
@@ -390,7 +390,7 @@ def pr(message):
 def idf(message):
     thischatsid = message.chat.id
     bot.reply_to(message, 'Die ID von diesem Chat ist ' + str(thischatsid))
-    print('- received chat id request, chat id is ' + thischatsid)
+    print('- received chat id request, chat id is ' + str(thischatsid))
 
 @bot.message_handler(commands = ['math'])
 def weinimath(message):
