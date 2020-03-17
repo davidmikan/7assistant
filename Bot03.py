@@ -16,7 +16,7 @@ hu = {} #dictionary von aufgaben, fächer als keys
 now = datetime.now()
 json_hws = 'homeworks.json'
 hu_sav = {}
-chid = '-1001256312641' #für siebenaalpha gruppe
+chid = -1001256312641 #für siebenaalpha gruppe
 commandids = []
 
 def to_day(datum, forjson):
@@ -392,17 +392,34 @@ def idf(message):
     bot.reply_to(message, 'Die ID von diesem Chat ist ' + str(thischatsid))
     print('- received chat id request, chat id is ' + thischatsid)
 
-def handle_messages(messages):
-    for message in messages:
-        if message.text:
-            text = message.text.split()
-            for part in text:
-                fct = rw.extract_fct(part)
-                print(fct)
-                if fct:
-                    rw.plot_fct(fct)
-                else:
-                    return
+@bot.message_handler(commands = ['math'])
+def weinimath(message):
+    print('-'*20)
+    print('REICEIVED COMMAND', message.text)
+    text = message.text
+    text = text.replace('/math ','')
+    text = text.lower()
+    fct = rw.extract_fct(text)
+    if fct: ##found function
+        rw.plot_fct(fct)
+    else:
+        val = rw.fctval(text)
+        if val: ##found value request
+            return
+        else:     
+            rwmsg = 'Wer unterrichtet euch in Mathe, dass ihr nicht einmal fähig seid einen Bot zu benutzen?'
+            rw.weini.reply_to(message, rwmsg)
+            
+
+##@bot.message_handler(content_types=['text'])
+##def weini(message):
+##    print('-'*20)
+##    print('Starting weinhandler...')
+##    rw.weinhandler(message)
+
+##def handle_messages(messages):
+##    for message in messages:
+        
 		
 
 class ScheduleThread(threading.Thread):
@@ -422,7 +439,7 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
 
-bot.set_update_listener(handle_messages)
+#bot.set_update_listener(handle_messages)
 thread1 = BotThread()
 thread2 = ScheduleThread()
 thread1.start()
