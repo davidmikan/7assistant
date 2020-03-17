@@ -10,10 +10,46 @@ triggered = ['robert', 'weini', 'weinhandl']
 ideen = []
 chid = '-1001256312641'
 
-##def weinhandler(message):
-##    text = message.text
-##    
-##
+triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater'], 3:['weini', 'weinhandl', 'robert'], 4:['schweigefuchs', 'fuchs', 'scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber']}
+answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'geozebra'], 2:['dön dön dön dün dü dün dön dü dü', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERDE DICH MIT VOLLER KRAFT AND DIE WAND FAHREN', 'Cave Canem']}
+
+def weinhandler(message):
+    text = message.text
+    text = text.lower()
+    print('Scanning for Keywords...')
+    found = []
+    for x in triggers:
+        trig = triggers[x]
+        if any(i in text for i in trig):
+            found.append(x)
+    if found:
+        key = random.choice(found)
+        print('Found Keywords!')
+        if key == 4:
+            weini.send_sticker(chid, 'CAACAgQAAxkBAANyXnE1eMKQkpiSeMOVo2nmKCk8AXgAAhUAA8l8pyFcPa6h4vaXuxgE') 
+        elif key == 5:
+            ftm = [i for i in triggers[5] if i in text]
+            tm = random.choice(ftm)
+            msg = 'Es heißt HERR PROFESSOR ' + tm
+            weini.send_message(chid, msg)
+        elif key == 6:
+            ftw = [i for i in triggers[6] if i in text]
+            tw = random.choice(ftw)
+            msg = 'Es heißt FRAU PROFESSOR ' + tw
+            weini.send_message(chid, msg)
+        else:
+            ch = answer[key]
+            msg = random.choice(ch)
+            weini.send_message(chid, msg)
+            print('Sent Answer:',msg)
+    else:
+        return
+    
+    
+    
+        
+        
+
 
 rwfct = ''
 

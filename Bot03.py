@@ -411,15 +411,11 @@ def weinimath(message):
             rw.weini.reply_to(message, rwmsg)
             
 
-##@bot.message_handler(content_types=['text'])
-##def weini(message):
-##    print('-'*20)
-##    print('Starting weinhandler...')
-##    rw.weinhandler(message)
-
-##def handle_messages(messages):
-##    for message in messages:
-        
+@bot.message_handler(content_types=['text'])
+def weini(message):
+    print('-'*20)
+    print('Starting weinhandler...')
+    rw.weinhandler(message)      
 		
 
 class ScheduleThread(threading.Thread):
@@ -439,7 +435,6 @@ class BotThread(threading.Thread):
                 print(str(e))
                 continue
 
-#bot.set_update_listener(handle_messages)
 thread1 = BotThread()
 thread2 = ScheduleThread()
 thread1.start()
