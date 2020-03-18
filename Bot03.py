@@ -397,7 +397,7 @@ def weinimath(message):
     print('-'*20)
     print('REICEIVED COMMAND', message.text)
     text = message.text
-    text = text.replace('/math ','')
+    text = message.text.replace('/math ','')
     text = text.lower()
     fct = rw.extract_fct(text)
     if fct: ##found function

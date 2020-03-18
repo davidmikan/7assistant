@@ -9,15 +9,15 @@ weini = telebot.TeleBot('928189418:AAH6SZbYLU5p7J12VhhfimKGvQZO080n0ek')
 triggered = ['robert', 'weini', 'weinhandl']
 ideen = []
 chid = '-1001256312641'
-<<<<<<< Updated upstream
 
-triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater'], 3:['weini', 'weinhandl', 'robert'], 4:['schweigefuchs', 'fuchs', 'scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber']}
-answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'geozebra'], 2:['dön dön dön dün dü dün dön dü dü', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERDE DICH MIT VOLLER KRAFT AND DIE WAND FAHREN', 'Cave Canem']}
+triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater', 'yoda', 'baby yoda'], 3:['weini', 'robert'], 4:['schweigefuchs', 'fuchs', 'scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß', 'leise', 'hört'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber'], 7:['zu spät']}
+answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'GeoZebra'], 2:['dön dön dön dün dü dün, dün dü düu, dü dü dü di do do', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir!', 'Luke, ich bin dein Klassenvorstand'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERD DICH AN DIE WAND FAHREN', 'Cave Canem']}
 
 def weinhandler(message):
     text = message.text
     text = text.lower()
     print('Scanning for Keywords...')
+
     found = []
     for x in triggers:
         trig = triggers[x]
@@ -31,12 +31,12 @@ def weinhandler(message):
         elif key == 5:
             ftm = [i for i in triggers[5] if i in text]
             tm = random.choice(ftm)
-            msg = 'Es heißt HERR PROFESSOR ' + tm
+            msg = 'Es heißt HERR PROFESSOR ' + tm.capitalize()
             weini.send_message(chid, msg)
         elif key == 6:
             ftw = [i for i in triggers[6] if i in text]
             tw = random.choice(ftw)
-            msg = 'Es heißt FRAU PROFESSOR ' + tw
+            msg = 'Es heißt FRAU PROFESSOR ' + tw.capitalize()
             weini.send_message(chid, msg)
         else:
             ch = answer[key]
@@ -45,12 +45,6 @@ def weinhandler(message):
             print('Sent Answer:',msg)
     else:
         return
-    
-    
-    
-        
-        
-
 
 rwfct = ''
 
@@ -75,9 +69,6 @@ def fctval(string):
     else:
         return None
 
-=======
-	
->>>>>>> Stashed changes
 def extract_fct(string):
     print('-'*20)
     print('Exctrating function from', string,'...')
@@ -106,7 +97,7 @@ def extract_fct(string):
             else:
                 print('ERROR: No cos or sin found!')
                 print('-'*20)
-                return none
+                return None
         #found no cos or sin
         else:
             print('Found no cosin indicators...')
