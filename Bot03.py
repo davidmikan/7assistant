@@ -408,9 +408,13 @@ def pr(message):
 
 @bot.message_handler(commands = ['id'])
 def idf(message):
-    thischatsid = message.chat.id
-    bot.reply_to(message, 'Die ID von diesem Chat ist ' + str(thischatsid))
-    print('- received chat id request, chat id is ' + str(thischatsid))
+    print('-'*20, 'RECEIVED COMMAND: /id')
+    thisid = message.chat.id
+    msgid = message.message_id
+    bot.delete_message(chid, msgid)
+    print('The id of this chat is:', thisid)
+    print('-'*20)
+    return
 
 @bot.message_handler(commands = ['math'])
 def weinimath(message):
