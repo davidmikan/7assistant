@@ -13,7 +13,7 @@ chid = '-1001256312641'
 late = 'late.json'
 
 
-triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater', 'yoda', 'baby yoda'], 3:['weini', 'robert'], 4:['shit', 'scheisse','scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß', 'leise', 'hört'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber'], 7:['zu spät', 'zuspät'], 8:['aller',]}
+triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater', 'yoda', 'baby yoda'], 3:['weini', 'robert'], 4:['shit', 'scheisse','scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß', 'leise', 'hört'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber'], 8:['aller',]}
 answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'geozebra'], 2:['dön dön dön dün dü dün, dün dü düu, dü dü dü di do do', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir!', 'Luke, ich bin dein Klassenvorstand'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERD DICH AN DIE WAND FAHREN', 'Cave Canem'], 7:['Schon in WebUntis vermerkt.','Die drei-viertel-acht Regelung folgt auf dem Fuße!'], 8:['Du solltest nirgendwo hin, außer in den Deutschunterricht', 'Bruda wer kommt aller Digga!','AlleR guten Dinge sind drei. Deine Rechtschreibung zählt nicht dazu.','Das klingt so als würde ein Serbe versuchen Deutsch zu sprechen!']}
 
 ##utilities
@@ -41,14 +41,14 @@ def weinhandler(message):
             found.append(x)
     if found:
         ## adding to late pupils and checking
-        if 7 in found:
-            lu = re_json(late)
-            user = message.from_user.first_name
-            if user in lu:
-                lu[user] += 1
-            else:
-                lu[user] = 1
-            wr_json(lu, late)
+##        if 7 in found:
+##            lu = re_json(late)
+##            user = message.from_user.first_name
+##            if user in lu:
+##                lu[user] += 1
+##            else:
+##                lu[user] = 1
+##            wr_json(lu, late)
         print('Found Keywords!')
         ## chosing random answer
         key = random.choice(found)

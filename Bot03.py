@@ -21,6 +21,24 @@ hu_sav = {}
 chid = -1001256312641 #für siebenaalpha gruppe
 commandids = []
 
+userf = '7auser.txt'
+
+def save(message, targetf):
+    uid = message.from_user.id
+    uname = message.from_user.first_name
+    utext = message.text
+    cont = '-'*30 + '\r\n'
+    cont += '>> MESSAGE' + '\r\n'
+    cont += '[+]ID: '+ str(uid) + '\r\n'
+    cont += '[+]First Name: '+ uname + '\r\n'
+    cont += 'Content:' + '\r\n'
+    cont += utext + '\r\n'
+    cont += '-'*30
+    with open(targetf, 'a+') as f:
+        f.write(cont)
+    return
+        
+
 def to_day(datum, forjson):
     if not forjson: print('(to_day) converting ' + str(datum) + '...')
     test = datum - now.date()
@@ -415,6 +433,7 @@ def weinimath(message):
 
 @bot.message_handler(content_types=['text'])
 def weini(message):
+    save(message, userf)
     print('-'*20)
     print('Starting weinhandler...')
     rw.weinhandler(message)
