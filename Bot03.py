@@ -415,7 +415,7 @@ def idf(message):
 @bot.message_handler(commands = ['math'])
 def weinimath(message):
     print('-'*20)
-    print('REICEIVED COMMAND', message.text)
+    print('RECEIVVED COMMAND', message.text)
     text = message.text
     text = message.text.replace('/math ','')
     text = text.lower()

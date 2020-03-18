@@ -108,6 +108,7 @@ rwfct = ''
 def fctval(string):
     print('Extracting function value request...')
     global rwfct
+    string = string.replace(' ', '')
     p = re.compile(r'f\(\d+\.?\d*')
     m = p.search(string)
     if m:
@@ -130,10 +131,13 @@ def extract_fct(string):
     print('-'*20)
     print('Exctrating function from', string,'...')
     global rwfct
-    p = re.compile(r'f\(x\)=[x\d.\+\*\-/\^()coisn]+', re.I)
+    string = string.replace(' ', '')
+    p = re.compile(r'[a-z]\(x\)=[x\d.\+\*\-/\^()coisn]+', re.I)
     m = p.search(string)
     if m:
         fct = m.group()
+        fct = fct[5:]
+        fct = fct.replace('^','**')
         print(fct)
         a = 'cosin'
         wfct = ['sin', 'cos']
@@ -171,17 +175,17 @@ def extract_fct(string):
         print('-'*20)
         return None
 
-def plot_fct(term):
+def plot_fct(fctn):
     print('-'*20)
-    print('Plotting function', term)
+    print('Plotting function', fctn)
     yvals = []
     x = linspace(-10,10,200)
-    lab = 'f(x)=' + term
-    print(lab)
+    term = fctn[5:]
+    print(fctn)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    plt.plot(x,eval(term),'g')
-    plt.title(lab)
+    plt.plot(x,eval(fctn),'g')
+    plt.title(fctn)
     plt.savefig('plot.png')
     print('Exported plot sucessfully!')
     with open('plot.png', 'rb') as image:

@@ -1,0 +1,193 @@
+------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+wer aller
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+voll schön
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+danke, der bot  dnktioniert sonst ganz normal
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+vor erst
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+nur die zu sät funtiionnen hab ich deaktiviert
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ja aber wahrscheinlich nur krz
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+kannst du vielleicht dann nen call mit reden machen?
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+kannst du nicht in deinem zimmer?
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+okay ich kann jetzt kru oder auch länger
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+wir sollten einn utility bot in die echte 7A geben der nichts sendet sondern nur so daten für uns erhebt
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+okay gib mir 5 min
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+so wie die chat id
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+und so weiter das är echt nützlich
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+teams?
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+laptop oder imac
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+Okay teams
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+Muss er on komme
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+bist du?
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+Warte kurz
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+Ja
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+f(x)=32cos(x)
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+f(x)=3x
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+f(x)=x
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+f(x)=x-1
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+f(x)=x-1-1-1-1-1-1-1-1-x
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+g(x)=2*x
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+verkackt
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+j
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+oh
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+A das erklärts
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+der code ist wiiirklich hässlich
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 564624585
+[+]First Name: user
+Content:
+g( x ) = 1 + 3^x
+------------------------------
