@@ -67,8 +67,11 @@ def extract_date(s, forjson):
     if x:
         dat = ''
         datum = x.group()
-        s = p.sub('',s)
-        s = s.replace('  ',' ')
+        #s filter
+        ps = re.compile(r'\d{1,2}\.\d{1,2}\.|bis ?\d{1,2}\.\d{1,2}\.|\S+\d{1,2}\.\d{1,2}\.\S+|\d{1,2}\.\d{1,2}\.2020')    
+        if ps.search(s): s = ps.sub('', s)
+        ps = re.compile(r' $')
+        if ps.search(s): s = ps.sub('', s)
         datum = datum.split('.')
         del datum[2]
         for a in datum:
@@ -98,8 +101,10 @@ def extract_day(s):
     p = re.compile(r'montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag', re.I)
     tag = p.search(s)
     if tag:
-        s = p.sub('',s, 1)
-        s = s.replace('  ', ' ')
+        ps = re.compile(r'bis (montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)|\S+(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\S+|(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)', re.I)    
+        if ps.search(s): s = ps.sub('', s)
+        ps = re.compile(r' $')
+        if ps.search(s): s = ps.sub('', s)
         tag = tag.group()
         tag = tag.lower()
         tag = tag.capitalize()
