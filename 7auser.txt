@@ -190,4 +190,382 @@ der code ist wiiirklich hässlich
 [+]First Name: user
 Content:
 g( x ) = 1 + 3^x
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+okay soll ich schnell so ein manuelles begrüßungsskript machen?
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+bin wieder da
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+egal
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+airpods?
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+es klingt plötzlich schlecher qualitt
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+okay das ist fertig
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ja
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+das man nurstarten muss
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+aber damit es sicherer ist
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ja
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+warte ich geb  kur den 7analytics bot in die Gruppe
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+wasmeinst du
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+aso das r drinnen ist die nachricht
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ja es soll so ein geheim bot sien
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+das ist der token
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+welche
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+1073990987:AAEfarh2PwtsZM26ryeePqhPmlhNkMtv2Hc
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+mache ich
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+schon
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+damit er so alle nachrichten scnnat
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+wenn privacy mode aus dann getted er nachrichten oder
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+bitte nicht
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+noch nicht
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+doch
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+okay es geht
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ich auch ich willheute
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+warte
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+nch nichts schrieben
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ich hab schon eine
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+endermenfarm
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+nein
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+so ein coole habe ich
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ich auch
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+es ist halt so auf ner patform ur weit weg
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+puuh
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ich mit ich will nciht uuuur lange warte
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+herzinfarkt
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+verzögert
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+okay das ich nicht so lange
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+okay
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+sdf
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+test
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+ja
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+fuck
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+nein ich wollte schweigefucks
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+natürlich gehts ned, weil if immer true ist weil du msg davor ja definierst
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+nur false wenn es leer ist
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+aja
+------------------------------------------------------------
+>> MESSAGE
+[+]ID: 987305199
+[+]First Name: T
+Content:
+aja est ist egal wie du dicts schreibst
 ------------------------------

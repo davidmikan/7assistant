@@ -18,7 +18,7 @@ now = datetime.now()
 json_hws = 'homeworks.json'
 late = 'late.json'
 hu_sav = {}
-chid = -1001256312641 #für siebenaalpha gruppe
+chid = -491348909 #für siebenaalpha gruppe
 commandids = []
 
 userf = '7auser.txt'
@@ -442,6 +442,15 @@ def weinimath(message):
 @bot.message_handler(commands = ['todo'])
 def todo(message):
     show_daily(True)
+
+@bot.message_handler(commands = ['help'])
+def help(message):
+    msg = message.text.split(' ')
+    del msg[0]
+    if msg:
+        rw.help(hcmd = msg[0])
+    else:
+        rw.help()
 
 @bot.message_handler(content_types=['text'])
 def weini(message):

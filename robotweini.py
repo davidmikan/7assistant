@@ -9,12 +9,27 @@ weini = telebot.TeleBot('928189418:AAH6SZbYLU5p7J12VhhfimKGvQZO080n0ek')
 
 triggered = ['robert', 'weini', 'weinhandl']
 ideen = []
-chid = '-1001256312641'
+chid = -491348909
 late = 'late.json'
-
+helps = {
+    'add': '/add \nMit dem add-Befehl fügst du eine HÜ hinzu! \nDafür schreibe /add _<fach> <deadline> <aufgabe>_ oder einfach `/add`!', 
+    'show': '/show \nMit dem show-Befehl zeigst du die HÜs an!\nDafür schreibe /show _<fach>_ oder einfach /show!', 
+    'revert': '/revert\n Mir dem revert-Befehl kannst du deinen letzten Befehl rückgängig machen!\n Dafür schreibe einfach /revert!', 
+    'del': '/del\nMit dem /del-Befehl kannst du HÜs für Fächer aus der Liste entfernen!\nDafür schreibe einfach /del _<fach>_ oder auch nur /del!', 
+    'math': '/math\n Mir dem math-Befehl kannst du dir vom Mathe-Profi höchstpersönlich (mir) Funktionen anzeigen lassen!\n Dafür schreibe einfach /math _f(x) = <funktionsgleichung>_!'
+    }
 
 triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater', 'yoda', 'baby yoda'], 3:['weini', 'robert'], 4:['shit', 'scheisse','scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß', 'leise', 'hört'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber'], 8:['aller',]}
 answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'geozebra'], 2:['dön dön dön dün dü dün, dün dü düu, dü dü dü di do do', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir!', 'Luke, ich bin dein Klassenvorstand'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERD DICH AN DIE WAND FAHREN', 'Cave Canem'], 7:['Schon in WebUntis vermerkt.','Die drei-viertel-acht Regelung folgt auf dem Fuße!'], 8:['Du solltest nirgendwo hin, außer in den Deutschunterricht', 'Bruda wer kommt aller Digga!','AlleR guten Dinge sind drei. Deine Rechtschreibung zählt nicht dazu.','Das klingt so als würde ein Serbe versuchen Deutsch zu sprechen!']}
+
+def help(hcmd='msg'):
+    msg = '7Assistants Befehle:'
+    try:
+        msg += '\n \n' + helps[hcmd]
+    except:
+        for x in helps:
+            msg += '\n \n' + helps[x]
+    weini.send_message(chid, msg, parse_mode='Markdown')
 
 ##utilities
 def wr_json(dictio, targetfile):

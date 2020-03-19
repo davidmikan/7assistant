@@ -2,5 +2,5 @@ weini und 7assistant kommen in gruppe
 weini schickt video
 weini schickt begrüßung:
 "
-Alle bitte zuhören! Wir ihr seht, haben wir einen Schüler in der Klassengruppe! Er wird uns helfen, unsere Hausübungen zu
+Alle bitte zuhören! \nWir ihr seht, haben wir einen Schüler in der Klassengruppe! Er wird uns helfen, unsere Hausübungen abzuspeichern und im Auge zu behalten. Wir sagen ihm immer Bescheid, wenn wir eine neue Hausübung aufbekommen und er speichert sie für uns ab. Dann können wir ihn nach den Hausübungen fragen und er sagt uns, was bis wann auf ist. Außerdem weiß er auch, was bis morgen zu tun ist, und erinnert uns jeden Tag daran! \nHochachtungsvoll, Robot Weinhandl!
 "
