@@ -132,7 +132,7 @@ def extract_fct(string):
     print('Exctrating function from', string,'...')
     global rwfct
     string = string.replace(' ', '')
-    p = re.compile(r'[a-z]\(x\)=[x\d.\+\*\-/\^()coisn]+', re.I)
+    p = re.compile(r'f\(x\)=[x\d.\+\*\-/\^()coisn]+', re.I)
     m = p.search(string)
     if m:
         fct = m.group()
@@ -181,15 +181,22 @@ def plot_fct(fctn):
     yvals = []
     x = linspace(-10,10,200)
     term = fctn[5:]
+    title = fctn.replace('**3','³')
+    title = title.replace('**2','²')
+    title = title.replace('**','^')
+    title = 'f(x)=' + title
     print(fctn)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    plt.plot(x,eval(fctn),'g')
-    plt.title(fctn)
-    plt.savefig('plot.png')
-    print('Exported plot sucessfully!')
-    with open('plot.png', 'rb') as image:
-          weini.send_photo(chid, image)
-          print('Sent plot sucessfully!')
-          print('-'*20)
+    try:
+        plt.plot(x,eval(fctn),'g')
+        plt.title(title)
+        plt.savefig('plot.png')
+        print('Exported plot sucessfully!')
+        with open('plot.png', 'rb') as image:
+              weini.send_photo(chid, image)
+              print('Sent plot sucessfully!')
+              print('-'*20)
+    except:
+        weini.send_message(chid, 'Ich konnte die Funktion leider nicht auswerten!')
    

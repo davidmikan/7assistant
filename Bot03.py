@@ -433,7 +433,10 @@ def weinimath(message):
         else:     
             rwmsg = 'Wer unterrichtet euch in Mathe, dass ihr nicht einmal fähig seid einen Bot zu benutzen?'
             rw.weini.reply_to(message, rwmsg)
-            
+
+@bot.message_handler(commands = ['todo'])
+def todo(message):
+    show_daily(True)
 
 @bot.message_handler(content_types=['text'])
 def weini(message):
