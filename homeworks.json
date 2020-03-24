@@ -1,1 +1,48 @@
-{}
+{
+     "chemie": [
+          {
+               "dead": "23.3.",
+               "task": "Le Chatelier"
+          },
+          {
+               "dead": "27.3.",
+               "task": "S\u00e4uren und Basen"
+          }
+     ],
+     "physik": [
+          {
+               "dead": "25.3.",
+               "task": "Zusammenfassung 4 Artikel"
+          }
+     ],
+     "geschichte": [
+          {
+               "dead": "3.4.",
+               "task": "Portfolio"
+          }
+     ],
+     "latein": [
+          {
+               "dead": "24.3.",
+               "task": "Henry Purcell"
+          }
+     ],
+     "be": [
+          {
+               "dead": "31.3.",
+               "task": "Paraphrasieren"
+          }
+     ],
+     "deutsch": [
+          {
+               "dead": "15.4.",
+               "task": "Textanalyse, Er\u00f6rterung/Meinungsrede, Nora Ende"
+          }
+     ],
+     "mathe": [
+          {
+               "dead": "5.4.",
+               "task": "GeoGebra Notes Kreis + Kreis und Gerade, interaktives Video gestalten"
+          }
+     ]
+}

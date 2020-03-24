@@ -44,6 +44,7 @@ def re_json(targetfile):
 
 ##main functions
 def weinhandler(message):
+    print(message)
     text = message.text
     text = text.lower()
     print('Scanning for Keywords...')
@@ -107,11 +108,11 @@ def weinhandler(message):
             if 'wer' in text and 'kommt' in text:
                 ch = answer[key]
                 msg = random.choice(ch)
-                weini.reply_to(message, msg) 
+                weini.send_message(chid, msg)
         else:
             ch = answer[key]
             msg = random.choice(ch)
-            weini.reply_to(message, msg)
+            weini.send_message(chid, msg)
             if msg == "geozebra": weini.send_sticker(chid,'CAACAgEAAxkBAANzXnHuKw46bz26QFKBETYLuLcGgZUAAicAAzgOghF9an6UHkupzRgE')
             print('Sent Answer:',msg)
         return

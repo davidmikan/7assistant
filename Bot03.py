@@ -459,8 +459,6 @@ def weini(message):
     print('Starting weinhandler...')
     rw.weinhandler(message)
 
-		
-
 class ScheduleThread(threading.Thread):
      def run(self):
          schedule.every().day.at('14:00').do(show_daily, reminder=True)
