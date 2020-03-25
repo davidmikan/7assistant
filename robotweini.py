@@ -22,6 +22,9 @@ helps = {
 triggers = {1:['geogebra','geo gebra'], 2:['starwars', 'star wars', 'jedi', 'r2d2', 'c3po', 'laserschwert', 'ich bin dein vater', 'yoda', 'baby yoda'], 3:['weini', 'robert'], 4:['shit', 'scheisse','scheiße', 'ruhe', 'spamt', 'fuck', 'scheiß', 'leise', 'hört'], 5:['pichler', 'mayerhofer', 'prammer', 'staudner', 'huber', 'kandl', 'mollnar'], 6:['grömer', 'niedertscheider', 'oberthaler', 'fennes', 'höfferer', 'villarme', 'schwarz', 'gillinger', 'speiss', 'zinkl', 'bucher', 'schreiber'], 8:['aller',]}
 answer = {1:['i (x²+y²-1)3-x²y³=0 GeoGebra', 'GG = GeoGebra ≠ Gossip Girl ≠ Good Game', 'geozebra'], 2:['dön dön dön dün dü dün, dün dü düu, dü dü dü di do do', 'Deine Mathehausübungen machen du musst!', 'Sei Mahara mit dir!', 'Luke, ich bin dein Klassenvorstand'], 3:['Gibt\'s Probleme? Willst du welche?', 'ICH WERD DICH AN DIE WAND FAHREN', 'Cave Canem'], 7:['Schon in WebUntis vermerkt.','Die drei-viertel-acht Regelung folgt auf dem Fuße!'], 8:['Du solltest nirgendwo hin, außer in den Deutschunterricht', 'Bruda wer kommt aller Digga!','AlleR guten Dinge sind drei. Deine Rechtschreibung zählt nicht dazu.','Das klingt so als würde ein Serbe versuchen Deutsch zu sprechen!']}
 
+def say(msg):
+    weini.send_message(chid, msg, parse_mode='Markdown')
+
 def help(hcmd='msg'):
     msg = '7Assistants Befehle:'
     try:

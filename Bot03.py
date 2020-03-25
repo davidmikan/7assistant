@@ -9,19 +9,20 @@ import threading
 import copy
 import robotweini as rw
 
-
 bot = telebot.TeleBot('1070998367:AAExa_Zd5Hjtt-JOoHMGwgxeu9-FA_9x0iw')
 subs = ['mathe', 'deutsch', 'latein', 'englisch', 'franz-f', 'franz-a', 'psycho', 'chemie', 'physik', 'geschichte', 'geo', 'musik', 'be', 'reminder']
 weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
-hu = {} #dictionary von aufgaben, fächer als keys
+hu = {} #dictionary von aufgaben, fächer als keys   
 now = datetime.now()
 json_hws = 'homeworks.json'
 late = 'late.json'
 hu_sav = {}
-chid = -491348909 #für siebenaalpha gruppe
+chid = -491348909
 commandids = []
-
 userf = '7auser.txt'
+admins = [1037732489, 564624585]
+
+show_daily()
 
 def save(message, targetf):
     uid = message.from_user.id
@@ -37,7 +38,6 @@ def save(message, targetf):
     with open(targetf, 'a+') as f:
         f.write(cont)
     return
-        
 
 def to_day(datum, forjson):
     if not forjson: print('(to_day) converting ' + str(datum) + '...')
@@ -312,6 +312,20 @@ def dazu(message):
         bot.delete_message(chid, msgid)
         print('SUCCESFULLY ADDED TASK\n' + '-'*20)
 
+@bot.message_handler(commands = ['remind'])
+def remind(message):
+    text = message.text.split(' ')
+    del text[0]
+    if text:
+        return
+    else:
+        print('test1')
+        bot.register_next_step_handler(message, remind2)
+
+def remind2(message):
+    print('test2')
+    return
+
 @bot.message_handler(commands = ['show'])
 def zeige(message):
     print('-'*20 + '\nRECEIVED COMMAND "' + str(message.text) + '"')
@@ -443,6 +457,21 @@ def weinimath(message):
 def todo(message):
     show_daily(True)
 
+@bot.message_handler(commands = ['say'])
+def say(message):
+    if not message.from_user.id in admins: return
+    msg = ''
+    text = message.text[5:]
+    text = text.split('\n')
+    print(text)
+    for passage in text:
+        if passage.startswith('#'):
+            msg += '*'+passage[1:]+'*\n'
+        else:
+            msg += passage + '\n'
+    if msg: rw.say(msg)
+    bot.delete_message(message.chat.id, message.message_id)
+
 @bot.message_handler(commands = ['help'])
 def help(message):
     msg = message.text.split(' ')
@@ -456,7 +485,7 @@ def help(message):
 def weini(message):
     save(message, userf)
     print('-'*20)
-    print('Starting weinhandler...')
+    print('received message: ' + message.text)
     rw.weinhandler(message)
 
 class ScheduleThread(threading.Thread):
