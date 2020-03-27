@@ -22,8 +22,6 @@ commandids = []
 userf = '7auser.txt'
 admins = [1037732489, 564624585]
 
-show_daily()
-
 def save(message, targetf):
     uid = message.from_user.id
     uname = message.from_user.first_name
@@ -504,6 +502,8 @@ class BotThread(threading.Thread):
             except Exception as e:
                 print(str(e))
                 continue
+
+show_daily()
 
 thread1 = BotThread()
 thread2 = ScheduleThread()
